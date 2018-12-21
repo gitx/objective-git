@@ -89,6 +89,7 @@ def repackage_dependency(dep)
 
     note "Copying #{dep[:path]} to TARGET_FRAMEWORKS_PATH"
     FileUtils.cp dep[:path], TARGET_FRAMEWORKS_PATH
+    FileUtils.chmod "u=wr", dep[:path]
 
     out = `install_name_tool -change #{dep.path} "@rpath/#{dep.name}" #{dep.executable}`
     if $? != 0
