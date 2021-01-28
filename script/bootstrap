@@ -60,8 +60,8 @@ check_deps() {
     export expected_prefix=/usr/local
   fi
 
-  # Ensure that we have libgit2's dependencies installed.
-  installed=$(brew list)
+    # Ensure that we have libgit2's dependencies installed.
+    installed=`brew list --formula`
 
   for tool in $REQUIRED_TOOLS; do
     # Skip packages that are already installed.
