@@ -2164,6 +2164,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"/usr/local/opt/openssl@1.1/lib",
+					/opt/homebrew/opt/openssl/lib,
 					"$(PROJECT_DIR)/External/build/lib",
 					"$(PROJECT_DIR)/External",
 				);
@@ -2193,6 +2194,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"/usr/local/opt/openssl@1.1/lib",
+					/opt/homebrew/opt/openssl/lib,
 					"$(PROJECT_DIR)/External/build/lib",
 					"$(PROJECT_DIR)/External",
 				);
@@ -2436,6 +2438,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"/usr/local/opt/openssl@1.1/lib",
+					/opt/homebrew/opt/openssl/lib,
 					"$(PROJECT_DIR)/External/build/lib",
 					"$(PROJECT_DIR)/External",
 				);
@@ -2657,6 +2660,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"/usr/local/opt/openssl@1.1/lib",
+					/opt/homebrew/opt/openssl/lib,
 					"$(PROJECT_DIR)/External/build/lib",
 					"$(PROJECT_DIR)/External",
 				);
