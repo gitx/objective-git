@@ -7,12 +7,6 @@ set -e
 # ~/.MacOSX/environment.plist
 PATH="/usr/local/bin:$PATH"
 
-if [ "External/libgit2-mac.a" -nt "External/libgit2" ]
-then
-    echo "No update needed."
-    exit 0
-fi
-
 cd "External/libgit2"
 
 if [ -d "build" ]; then
@@ -33,9 +27,9 @@ cmake -DBUILD_SHARED_LIBS:BOOL=OFF \
 cmake --build .
 
 product="libgit2.a"
-install_path="../../"
-if [ "libgit2.a" -nt "${install_path}/libgit2-mac.a" ]; then
-    cp -v "libgit2.a" "${install_path}/libgit2-mac.a"
-fi
+productNew="libgit2-mac.a"
+install_path="../../${productNew}"
+rm -rf $install_path
+cp -v "${product}" "${install_path}"
 
 echo "libgit2 has been updated."
