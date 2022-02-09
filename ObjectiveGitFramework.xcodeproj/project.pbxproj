@@ -2169,7 +2169,7 @@
 				OTHER_LDFLAGS = (
 					"-force_load",
 					"External/libgit2-mac.a",
-					/usr/local/lib/libssh2.a,
+					External/libssh2.a,
 					"-lcrypto",
 					"-lssl",
 					"-lcurl",
@@ -2198,7 +2198,7 @@
 				OTHER_LDFLAGS = (
 					"-force_load",
 					"External/libgit2-mac.a",
-					/usr/local/lib/libssh2.a,
+					External/libssh2.a,
 					"-lcrypto",
 					"-lssl",
 					"-lcurl",
@@ -2436,7 +2436,7 @@
 				OTHER_LDFLAGS = (
 					"-force_load",
 					"External/libgit2-mac.a",
-					/usr/local/lib/libssh2.a,
+					External/libssh2.a,
 					"-lcrypto",
 					"-lssl",
 					"-lcurl",
@@ -2655,7 +2655,7 @@
 				OTHER_LDFLAGS = (
 					"-force_load",
 					"External/libgit2-mac.a",
-					/usr/local/lib/libssh2.a,
+					External/libssh2.a,
 					"-lcrypto",
 					"-lssl",
 					"-lcurl",
