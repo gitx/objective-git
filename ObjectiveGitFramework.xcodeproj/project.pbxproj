@@ -2179,6 +2179,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.libgit2.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = ObjectiveGit;
+				VALID_ARCHS = "x86_64 arm64";
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Debug;
@@ -2209,6 +2210,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.libgit2.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = ObjectiveGit;
+				VALID_ARCHS = "x86_64 arm64";
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Release;
@@ -2453,6 +2455,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.libgit2.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = ObjectiveGit;
+				VALID_ARCHS = "x86_64 arm64";
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Test;
@@ -2675,6 +2678,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.libgit2.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = ObjectiveGit;
+				VALID_ARCHS = "x86_64 arm64";
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Profile;
