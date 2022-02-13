@@ -1574,6 +1574,7 @@
 				fr,
 				de,
 				Base,
+				Base,
 			);
 			mainGroup = 0867D691FE84028FC02AAC07 /* ObjectiveGitFramework */;
 			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
