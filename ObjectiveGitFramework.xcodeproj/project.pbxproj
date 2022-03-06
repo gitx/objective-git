@@ -1687,7 +1687,6 @@
 				INFOPLIST_FILE = Info.plist;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"/usr/local/opt/openssl@1.1/lib",
 					"/opt/homebrew/Cellar/openssl@1.1/1.1.1m/lib",
 					"$(PROJECT_DIR)/External/build/lib",
 				);
@@ -1715,7 +1714,6 @@
 				INFOPLIST_FILE = Info.plist;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"/usr/local/opt/openssl@1.1/lib",
 					"/opt/homebrew/Cellar/openssl@1.1/1.1.1m/lib",
 					"$(PROJECT_DIR)/External/build/lib",
 				);
@@ -1958,7 +1956,6 @@
 				INFOPLIST_FILE = Info.plist;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"/usr/local/opt/openssl@1.1/lib",
 					"/opt/homebrew/Cellar/openssl@1.1/1.1.1m/lib",
 					"$(PROJECT_DIR)/External/build/lib",
 				);
@@ -2178,7 +2175,6 @@
 				INFOPLIST_FILE = Info.plist;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"/usr/local/opt/openssl@1.1/lib",
 					"/opt/homebrew/Cellar/openssl@1.1/1.1.1m/lib",
 					"$(PROJECT_DIR)/External/build/lib",
 				);
