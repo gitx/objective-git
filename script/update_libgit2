@@ -5,14 +5,14 @@ set -e
 cd "External/libgit2"
 
 if [ -d "build" ]; then
-    rm -rf "build"
+  rm -rf "build"
 fi
 
 mkdir build
 cd build
 
 # OpenSSL is keg-only, so add its pkgconfig location manually
-if [[ `uname -m` == 'arm64' ]]; then
+if [[ $(uname -m) == 'arm64' ]]; then
   echo "Running on a Apple Silicon M1"
   export ARCH_PREFIX=/opt/homebrew
 else
@@ -27,10 +27,10 @@ export PKG_CONFIG_PATH=$ARCH_PREFIX/opt/openssl/lib/pkgconfig
 PATH="$ARCH_PREFIX/bin:$PATH"
 
 cmake -DBUILD_SHARED_LIBS:BOOL=OFF \
-    -DLIBSSH2_INCLUDE_DIRS:PATH=$ARCH_PREFIX/include/ \
-    -DBUILD_CLAR:BOOL=OFF \
-    -DTHREADSAFE:BOOL=ON \
-    ..
+  -DLIBSSH2_INCLUDE_DIRS:PATH=$ARCH_PREFIX/include/ \
+  -DBUILD_CLAR:BOOL=OFF \
+  -DTHREADSAFE:BOOL=ON \
+  ..
 cmake --build .
 
 product="libgit2.a"
