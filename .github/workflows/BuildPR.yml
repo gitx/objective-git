@@ -39,4 +39,4 @@ jobs:
         run: |
           openssl version
       - name: Test and archive project
-        run: xcodebuild -workspace ObjectiveGitFramework.xcworkspace -scheme "ObjectiveGit Mac" test archive ARCHS="${{ matrix.abi }}"
+        run: xcodebuild -workspace ObjectiveGitFramework.xcworkspace -scheme "ObjectiveGit Mac" test ARCHS="${{ matrix.abi }}"
