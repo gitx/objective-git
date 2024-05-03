@@ -6,113 +6,105 @@ export SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 ## Configuration Variables
 ##
 
-config () {
-    # A whitespace-separated list of executables that must be present and locatable.
-    # These will each be installed through Homebrew if not found.
-    : ${REQUIRED_TOOLS="cmake libssh2 libtool autoconf automake pkg-config openssl"}
+config() {
+  # A whitespace-separated list of executables that must be present and locatable.
+  # These will each be installed through Homebrew if not found.
+  : ${REQUIRED_TOOLS="cmake libssh2 libtool autoconf automake pkg-config openssl"}
 
-    export REQUIRED_TOOLS
+  export REQUIRED_TOOLS
 }
 
 ##
 ## Bootstrap Process
 ##
 
-main ()
-{
-    config
+main() {
+  config
 
-    git submodule update --init --recursive
+  git submodule update --init --recursive
 
-    if [ -n "$REQUIRED_TOOLS" ]
-    then
-        echo "** Checking dependencies in Homebrew ..."
-        check_deps
-    fi
+  if [ -n "$REQUIRED_TOOLS" ]; then
+    echo "** Checking dependencies in Homebrew ..."
+    check_deps
+  fi
 }
 
-check_deps ()
-{
-    # Check if Homebrew is installed
-    which -s brew
-    local result=$?
+check_deps() {
+  # Check if Homebrew is installed
+  which -s brew
+  local result=$?
 
-    if [ "$result" -ne "0" ]
-    then
-        echo
-        echo "Homebrew is not installed (http://brew.sh). You will need to manually ensure the following tools are installed:"
-        echo "  $REQUIRED_TOOLS"
-        echo
-        echo "Additionally, the following libssh2 files must be symlinked under /usr/local or /opt/homebrew :"
-        echo "  lib/libssh2.a include/libssh2.h include/libssh2_sftp.h include/libssh2_publickey.h"
+  if [ "$result" -ne "0" ]; then
+    echo
+    echo "Homebrew is not installed (http://brew.sh). You will need to manually ensure the following tools are installed:"
+    echo "  $REQUIRED_TOOLS"
+    echo
+    echo "Additionally, the following libssh2 files must be symlinked under /usr/local or /opt/homebrew :"
+    echo "  lib/libssh2.a include/libssh2.h include/libssh2_sftp.h include/libssh2_publickey.h"
 
-        if [ ! -z "$CI" ]
-        then
-          echo
-          echo "I will try to install it now on github CI"
-          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-          echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> /Users/hannes/.zprofile
-          eval "$(/opt/homebrew/bin/brew shellenv)"
-        fi
+    if [ ! -z "$CI" ]; then
+      echo
+      echo "I will try to install it now on github CI"
+      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+      echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >>/Users/hannes/.zprofile
+      eval "$(/opt/homebrew/bin/brew shellenv)"
+    fi
+  fi
+
+  brew_prefix=$(brew --prefix)
+  if [[ $(uname -m) == 'arm64' ]]; then
+    echo "** Running on a Apple Silicon M1"
+    export expected_prefix=/opt/homebrew
+  else
+    echo "** Running on a Apple x86"
+    export expected_prefix=/usr/local
+  fi
+
+  # Ensure that we have libgit2's dependencies installed.
+  installed=$(brew list)
+
+  echo "Brew comes with following installed ssl programs"
+  brew list | grep ssl
+
+  for tool in $REQUIRED_TOOLS; do
+    # Skip packages that are already installed.
+    echo "$installed" | grep -q "$tool" && code=$? || code=$?
+
+    if [ "$code" -eq "0" ]; then
+      echo "*** $tool is available 👍"
+      continue
+    elif [ "$code" -ne "1" ]; then
+      exit $code
     fi
 
-    brew_prefix=`brew --prefix`
-    if [[ `uname -m` == 'arm64' ]]; then
-      echo "** Running on a Apple Silicon M1"
-      export expected_prefix=/opt/homebrew
-    else
-      echo "** Running on a Apple x86"
-      export expected_prefix=/usr/local
-    fi
+    echo "*** Installing $tool with Homebrew..."
+    brew install "$tool"
+  done
 
-    # Ensure that we have libgit2's dependencies installed.
-    installed=`brew list`
+  install_path="./External"
+  echo "*** copy "$brew_prefix"/lib/libssh2.a to $install_path"
+  cp "$brew_prefix"/lib/libssh2.a $install_path
 
-    for tool in $REQUIRED_TOOLS
-    do
-        # Skip packages that are already installed.
-        echo "$installed" | grep -q "$tool" && code=$? || code=$?
+  if [ "$brew_prefix" != "$expected_prefix" ]; then
+    echo "*** Adding soft links into $expected_prefix..."
 
-        if [ "$code" -eq "0" ]
-        then
-            echo "*** $tool is available 👍"
-            continue
-        elif [ "$code" -ne "1" ]
-        then
-            exit $code
-        fi
+    products=(lib/libssh2.a include/libssh2.h include/libssh2_sftp.h include/libssh2_publickey.h)
 
-        echo "*** Installing $tool with Homebrew..."
-        brew install "$tool"
+    for product in "${products[@]}"; do
+      destination="$expected_prefix/$product"
+      if [ -e "$destination" ]; then
+        continue
+      fi
+
+      sudo mkdir -p "$(dirname "$destination")"
+      sudo ln -s "$brew_prefix/$product" "$destination"
     done
+  fi
 
-    install_path="./External"
-    echo "*** copy "$brew_prefix"/lib/libssh2.a to $install_path"
-    cp "$brew_prefix"/lib/libssh2.a $install_path
-
-    if [ "$brew_prefix" != "$expected_prefix" ]
-    then
-        echo "*** Adding soft links into $expected_prefix..."
-
-        products=(lib/libssh2.a include/libssh2.h include/libssh2_sftp.h include/libssh2_publickey.h)
-
-        for product in "${products[@]}"
-        do
-            destination="$expected_prefix/$product"
-            if [ -e "$destination" ]
-            then
-                continue
-            fi
-
-            sudo mkdir -p "$(dirname "$destination")"
-            sudo ln -s "$brew_prefix/$product" "$destination"
-        done
-    fi
-
-    # openssl@1 is expected
-    sslSource=$(find $brew_prefix -name libcrypto.a | grep openssl | sort | head -1 | xargs dirname)
-    echo "Find libcrypto.a and take first $sslSource and copy to $install_path"
-    cp $sslSource/* $install_path 2>/dev/null | echo "Copy and ignore subdirectory. This makes build work on x86 and arm64"
+  # openssl@1 is expected
+  sslSource=$(find $brew_prefix -name libcrypto.a | grep openssl | sort | head -1 | xargs dirname)
+  echo "Find libcrypto.a and take first $sslSource and copy to $install_path"
+  cp $sslSource/* $install_path 2>/dev/null | echo "Copy and ignore subdirectory. This makes build work on x86 and arm64"
 }
 
 main
