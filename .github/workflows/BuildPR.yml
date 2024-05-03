@@ -9,7 +9,7 @@ on:
 jobs:
   build-objective-git:
     name: Build objective-git
-    runs-on: macOS-latest
+    runs-on: macOS-12
     strategy:
       fail-fast: false
       matrix:
