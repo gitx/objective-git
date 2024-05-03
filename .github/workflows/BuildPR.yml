@@ -9,11 +9,11 @@ on:
 jobs:
   build-objective-git:
     name: Build objective-git
-    runs-on: macOS-latest
+    runs-on: macOS-13
     strategy:
       fail-fast: false
       matrix:
-        xcode: [ Xcode_14.2, Xcode_13.4 ]
+        xcode: [ Xcode_14.2, Xcode_15.0 ]
     steps:
       - name: ls Xcode
         run: ls -la /Applications/Xcode*
