@@ -14,7 +14,7 @@ jobs:
       fail-fast: false
       matrix:
         os : [ macOS-13 ]
-        xcode: [ Xcode_14.2, Xcode_13.4 ]
+        xcode: [ Xcode_14.1, Xcode_14.2, Xcode_15.3, Xcode_15.1, Xcode_15.2 ]
     steps:
       - name: ls Xcode
         run: ls -la /Applications/Xcode*
