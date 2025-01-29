@@ -13,9 +13,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os : [ macOS-13 ]
-        xcode: [ Xcode_14.1, Xcode_14.2, Xcode_15.1, Xcode_15.2 ]
-        arch: [ x86_64 ]
+        os : [ macOS-14 ]
+        xcode: [ Xcode_15.1, Xcode_15.2, Xcode_15.3, Xcode_15.4, Xcode_16.1, Xcode_16.2 ]
+        arch: [ arm64 ]
     steps:
       - name: ls Xcode
         run: ls -la /Applications/Xcode*
