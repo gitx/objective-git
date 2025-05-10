@@ -35,7 +35,7 @@ jobs:
       - name: Show openssl version
         run: |
           openssl version
-      - name: Test project
+      - name: Test project ${{ matrix.arch }}
         run: xcodebuild -workspace ObjectiveGitFramework.xcworkspace -scheme "ObjectiveGit Mac" test ARCHS="${{ matrix.arch }}"
-      - name: Archive project
+      - name: Archive project ${{ matrix.arch }}
         run: xcodebuild -workspace ObjectiveGitFramework.xcworkspace -scheme "ObjectiveGit Mac" archive ARCHS="${{ matrix.arch }}"
