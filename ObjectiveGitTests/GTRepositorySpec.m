@@ -68,7 +68,7 @@ describe(@"+repositoryWithURL:error:", ^{
 describe(@"+cloneFromURL:toWorkingDirectory:options:error:transferProgressBlock:checkoutProgressBlock:", ^{
 	__block BOOL transferProgressCalled = NO;
 	__block BOOL checkoutProgressCalled = NO;
-	__block void (^transferProgressBlock)(const git_transfer_progress *, BOOL *);
+	__block void (^transferProgressBlock)(const git_indexer_progress *, BOOL *);
 	__block void (^checkoutProgressBlock)(NSString *, NSUInteger, NSUInteger);
 	__block NSURL *originURL;
 	__block NSURL *workdirURL;
@@ -78,7 +78,7 @@ describe(@"+cloneFromURL:toWorkingDirectory:options:error:transferProgressBlock:
 	beforeEach(^{
 		transferProgressCalled = NO;
 		checkoutProgressCalled = NO;
-		transferProgressBlock = ^(const git_transfer_progress *progress, BOOL *stop) {
+		transferProgressBlock = ^(const git_indexer_progress *progress, BOOL *stop) {
             transferProgressCalled = YES;
         };
 		checkoutProgressBlock = ^(NSString *path, NSUInteger completedSteps, NSUInteger totalSteps) {
