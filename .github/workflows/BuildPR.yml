@@ -16,6 +16,10 @@ jobs:
         os : [ macOS-13 ]
         xcode: [ 14.1, 14.2, 15.1, 15.2 ]
         arch: [ x86_64 ]
+        include:
+        - xcode: 16.2.0
+          os: macos-14
+          arch: arm64
     steps:
       - name: ls Xcode
         run: ls -la /Applications/Xcode*
