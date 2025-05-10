@@ -634,6 +634,12 @@
 		D0D8186B174421EB00995A2E /* Mac-StaticLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Mac-StaticLibrary.xcconfig"; sourceTree = "<group>"; };
 		D0D8186C174421EB00995A2E /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		D0F4E28917C7F24200BBDE30 /* NSErrorGitSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSErrorGitSpec.m; sourceTree = "<group>"; };
+		D168F09427E9CE160015FAA8 /* macOS-Framework.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = "macOS-Framework.xcconfig"; path = "Carthage/Checkouts/xcconfigs/macOS/macOS-Framework.xcconfig"; sourceTree = SOURCE_ROOT; };
+		D168F09527E9CE160015FAA8 /* macOS-Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = "macOS-Base.xcconfig"; path = "Carthage/Checkouts/xcconfigs/macOS/macOS-Base.xcconfig"; sourceTree = SOURCE_ROOT; };
+		D168F09627E9CE160015FAA8 /* macOS-StaticLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = "macOS-StaticLibrary.xcconfig"; path = "Carthage/Checkouts/xcconfigs/macOS/macOS-StaticLibrary.xcconfig"; sourceTree = SOURCE_ROOT; };
+		D168F09727E9CE160015FAA8 /* macOS-DynamicLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = "macOS-DynamicLibrary.xcconfig"; path = "Carthage/Checkouts/xcconfigs/macOS/macOS-DynamicLibrary.xcconfig"; sourceTree = SOURCE_ROOT; };
+		D168F09827E9CE160015FAA8 /* macOS-XCTest.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = "macOS-XCTest.xcconfig"; path = "Carthage/Checkouts/xcconfigs/macOS/macOS-XCTest.xcconfig"; sourceTree = SOURCE_ROOT; };
+		D168F09927E9CE160015FAA8 /* macOS-Application.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = "macOS-Application.xcconfig"; path = "Carthage/Checkouts/xcconfigs/macOS/macOS-Application.xcconfig"; sourceTree = SOURCE_ROOT; };
 		D19D707127B8DACB00A5C740 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		DD3D9510182A81E1004AF532 /* GTBlame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTBlame.h; sourceTree = "<group>"; };
 		DD3D9511182A81E1004AF532 /* GTBlame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTBlame.m; sourceTree = "<group>"; };
@@ -1032,6 +1038,7 @@
 		D0D81857174421EB00995A2E /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
+				D168F09327E9CDE80015FAA8 /* Mac */,
 				D0A463D517E57C45000F5021 /* Base */,
 				D0D81862174421EB00995A2E /* iOS */,
 				D0D81866174421EB00995A2E /* Mac OS X */,
@@ -1064,6 +1071,19 @@
 				F81B6B54207B0A9F00AB0836 /* Mac-XCTest.xcconfig */,
 			);
 			path = "Mac OS X";
+			sourceTree = "<group>";
+		};
+		D168F09327E9CDE80015FAA8 /* Mac */ = {
+			isa = PBXGroup;
+			children = (
+				D168F09927E9CE160015FAA8 /* macOS-Application.xcconfig */,
+				D168F09527E9CE160015FAA8 /* macOS-Base.xcconfig */,
+				D168F09727E9CE160015FAA8 /* macOS-DynamicLibrary.xcconfig */,
+				D168F09427E9CE160015FAA8 /* macOS-Framework.xcconfig */,
+				D168F09627E9CE160015FAA8 /* macOS-StaticLibrary.xcconfig */,
+				D168F09827E9CE160015FAA8 /* macOS-XCTest.xcconfig */,
+			);
+			path = Mac;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2164,7 +2184,7 @@
 		};
 		D03FC3D81602E97F00BCFA73 /* Profile */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D0D8186A174421EB00995A2E /* Mac-Framework.xcconfig */;
+			baseConfigurationReference = D168F09427E9CE160015FAA8 /* macOS-Framework.xcconfig */;
 			buildSettings = {
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -2190,7 +2210,7 @@
 		};
 		D03FC3DA1602E97F00BCFA73 /* Profile */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D0D81867174421EB00995A2E /* Mac-Application.xcconfig */;
+			baseConfigurationReference = D168F09927E9CE160015FAA8 /* macOS-Application.xcconfig */;
 			buildSettings = {
 				CLANG_WARN_NULLABLE_TO_NONNULL_CONVERSION = NO;
 				FRAMEWORK_SEARCH_PATHS = (
