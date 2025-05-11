@@ -50,7 +50,7 @@ jobs:
       - name: Unlink openssl 3
         run: |
           brew unlink openssl@3
-#      - name: Test project
-#        run: xcodebuild -workspace ObjectiveGitFramework.xcworkspace -scheme "ObjectiveGit Mac" test ARCHS="${{ matrix.arch }}"
+      - name: Test project
+        run: xcodebuild -workspace ObjectiveGitFramework.xcworkspace -scheme "ObjectiveGit Mac" test ARCHS="${{ matrix.arch }}"
       - name: Archive project
         run: xcodebuild -workspace ObjectiveGitFramework.xcworkspace -scheme "ObjectiveGit Mac" archive ARCHS="${{ matrix.arch }}"
