@@ -26,6 +26,7 @@ export PKG_CONFIG_PATH=$ARCH_PREFIX/opt/openssl/lib/pkgconfig
 # ~/.MacOSX/environment.plist
 PATH="$ARCH_PREFIX/bin:$PATH"
 
+cmake --version
 cmake -DBUILD_SHARED_LIBS:BOOL=OFF \
   -DLIBSSH2_INCLUDE_DIRS:PATH=$ARCH_PREFIX/include/ \
   -DBUILD_CLAR:BOOL=OFF \
