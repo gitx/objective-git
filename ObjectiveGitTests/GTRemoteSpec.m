@@ -180,7 +180,7 @@ describe(@"network operations", ^{
 
 			__block unsigned int receivedObjects = 0;
 			__block BOOL transferProgressed = NO;
-			BOOL success = [fetchingRepo fetchRemote:remote withOptions:nil error:&error progress:^(const git_transfer_progress *stats, BOOL *stop) {
+			BOOL success = [fetchingRepo fetchRemote:remote withOptions:nil error:&error progress:^(const git_indexer_progress *stats, BOOL *stop) {
 				receivedObjects += stats->received_objects;
 				transferProgressed = YES;
 			}];
