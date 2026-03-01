@@ -30,7 +30,6 @@ cmake --version
 cmake -DBUILD_SHARED_LIBS:BOOL=OFF \
   -DBUILD_CLAR:BOOL=OFF \
   -DTHREADSAFE:BOOL=ON \
-  -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
   ..
 cmake --build .
 
