@@ -54,7 +54,7 @@
 	NSParameterAssert(inputData != nil);
 
 	git_buf input = inputData.git_buf;
-	git_buf output = GIT_BUF_INIT_CONST(0, NULL);
+	git_buf output = GIT_BUF_INIT;
 	int gitError = git_filter_list_apply_to_data(&output, self.git_filter_list, &input);
 
 	if (gitError != GIT_OK) {
@@ -69,7 +69,7 @@
 	NSParameterAssert(relativePath != nil);
 	NSParameterAssert(repository != nil);
 
-	git_buf output = GIT_BUF_INIT_CONST(0, NULL);
+	git_buf output = GIT_BUF_INIT;
 	// fixme: This is a workaround for an issue where `git_filter_list_apply_to_file`
 	// will not resolve relative paths against the worktree. It should be reverted when
 	// libgit2 has been updated to resolve that.
@@ -87,7 +87,7 @@
 - (NSData *)applyToBlob:(GTBlob *)blob error:(NSError **)error {
 	NSParameterAssert(blob != nil);
 
-	git_buf output = GIT_BUF_INIT_CONST(0, NULL);
+	git_buf output = GIT_BUF_INIT;
 	int gitError = git_filter_list_apply_to_blob(&output, self.git_filter_list, blob.git_blob);
 
 	if (gitError != GIT_OK) {

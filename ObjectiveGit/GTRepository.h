@@ -38,6 +38,7 @@
 #import "git2/checkout.h"
 #import "git2/repository.h"
 #import "git2/transport.h"
+#import "git2/deprecated.h"
 #import "git2/sys/transport.h"
 
 @class GTBlob;
@@ -58,7 +59,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Transport flags sent as options to +cloneFromURL... method
 typedef NS_OPTIONS(NSInteger, GTTransportFlags) {
-	GTTransportFlagsNone = GIT_TRANSPORTFLAGS_NONE
+	GTTransportFlagsNone = 0
 };
 
 /// An `NSNumber` wrapped `GTTransportFlags`, documented above.

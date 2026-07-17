@@ -115,7 +115,7 @@
 }
 
 - (NSString *)remoteName {
-	git_buf remote_name = GIT_BUF_INIT_CONST(0, NULL);
+	git_buf remote_name = GIT_BUF_INIT;
 	int gitError = git_branch_remote_name(&remote_name, self.repository.git_repository, self.reference.name.UTF8String);
 	if (gitError != GIT_OK) return nil;
 

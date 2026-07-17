@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "git2/deprecated.h"
 #import "git2/transport.h"
 
 /// An enum describing the data needed for authentication.
