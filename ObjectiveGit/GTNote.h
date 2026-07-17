@@ -28,7 +28,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "git2/oid.h"
+#import "git2/types.h"
+#import "git2/notes.h"
+#import "git2/repository.h"
 
 @class GTSignature;
 @class GTRepository;
@@ -88,4 +90,3 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 NS_ASSUME_NONNULL_END
-

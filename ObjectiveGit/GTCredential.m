@@ -105,8 +105,7 @@ int GTCredentialAcquireCallback(git_cred **git_cred, const char *url, const char
 	GTCredentialProvider *provider = info->credProvider;
 
 	if (provider == nil) {
-		git_error_set_str(GIT_EUSER, "No GTCredentialProvider set, but authentication was requested.");
-		return GIT_ERROR;
+		return GIT_EAUTH;
 	}
 
 	NSString *URL = (url != NULL ? @(url) : @"");
@@ -114,8 +113,7 @@ int GTCredentialAcquireCallback(git_cred **git_cred, const char *url, const char
 
 	GTCredential *cred = [provider credentialForType:(GTCredentialType)allowed_types URL:URL userName:userName];
 	if (cred == nil) {
-		git_error_set_str(GIT_EUSER, "GTCredentialProvider failed to provide credentials.");
-		return GIT_ERROR;
+		return GIT_EAUTH;
 	}
 
 	*git_cred = cred.git_cred;
