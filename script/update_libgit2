@@ -2,6 +2,15 @@
 
 set -e
 
+product="External/libgit2.a"
+newer_source=$(find External/libgit2 \
+  \( -path 'External/libgit2/.git' -o -path 'External/libgit2/build' \) -prune -o \
+  -type f -newer "$product" -print -quit 2>/dev/null || true)
+if [ -f "$product" ] && [ -z "$newer_source" ]; then
+  echo "libgit2 is up to date."
+  exit 0
+fi
+
 cd "External/libgit2"
 
 if [ -d "build" ]; then
@@ -12,7 +21,7 @@ mkdir build
 cd build
 
 # OpenSSL is keg-only, so add its pkgconfig location manually
-if [[ $(uname -m) == 'arm64' ]]; then
+if [ "$(uname -m)" = 'arm64' ]; then
   echo "Running on a Apple Silicon M1"
   export ARCH_PREFIX=/opt/homebrew
 else
