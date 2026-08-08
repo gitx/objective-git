@@ -79,7 +79,7 @@ describe(@"pull", ^{
 
 				// Pull
 				__block BOOL transferProgressed = NO;
-				BOOL result = [localRepo pullBranch:masterBranch fromRemote:remote withOptions:nil error:&error progress:^(const git_transfer_progress *progress, BOOL *stop) {
+				BOOL result = [localRepo pullBranch:masterBranch fromRemote:remote withOptions:nil error:&error progress:^(const git_indexer_progress *progress, BOOL *stop) {
 					transferProgressed = YES;
 				}];
 				expect(error).to(beNil());
@@ -124,7 +124,7 @@ describe(@"pull", ^{
 
 			// Pull
 			__block BOOL transferProgressed = NO;
-			BOOL result = [localRepo pullBranch:masterBranch fromRemote:remote withOptions:nil error:&error progress:^(const git_transfer_progress *progress, BOOL *stop) {
+			BOOL result = [localRepo pullBranch:masterBranch fromRemote:remote withOptions:nil error:&error progress:^(const git_indexer_progress *progress, BOOL *stop) {
 				transferProgressed = YES;
 			}];
 			expect(@(result)).to(beTruthy());
@@ -165,7 +165,7 @@ describe(@"pull", ^{
 
 			// Pull
 			__block BOOL transferProgressed = NO;
-			BOOL result = [localRepo pullBranch:masterBranch fromRemote:remote withOptions:nil error:&error progress:^(const git_transfer_progress *progress, BOOL *stop) {
+			BOOL result = [localRepo pullBranch:masterBranch fromRemote:remote withOptions:nil error:&error progress:^(const git_indexer_progress *progress, BOOL *stop) {
 				transferProgressed = YES;
 			}];
 			expect(error).to(beNil());
@@ -219,7 +219,7 @@ describe(@"pull", ^{
 
 			// Pull
 			__block BOOL transferProgressed = NO;
-			BOOL result = [localRepo pullBranch:masterBranch fromRemote:remote withOptions:nil error:&error progress:^(const git_transfer_progress *progress, BOOL *stop) {
+			BOOL result = [localRepo pullBranch:masterBranch fromRemote:remote withOptions:nil error:&error progress:^(const git_indexer_progress *progress, BOOL *stop) {
 				transferProgressed = YES;
 			}];
 			expect(@(result)).to(beTruthy());
@@ -251,7 +251,7 @@ describe(@"pull", ^{
 
 			// Pull
 			__block BOOL transferProgressed = NO;
-			BOOL result = [localRepo pullBranch:masterBranch fromRemote:remote withOptions:nil error:&error progress:^(const git_transfer_progress *progress, BOOL *stop) {
+			BOOL result = [localRepo pullBranch:masterBranch fromRemote:remote withOptions:nil error:&error progress:^(const git_indexer_progress *progress, BOOL *stop) {
 				transferProgressed = YES;
 			}];
 			NSString *fileContents = [NSString stringWithContentsOfURL:[localRepo.fileURL URLByAppendingPathComponent:@"test.txt"] encoding:NSUTF8StringEncoding error:nil];
