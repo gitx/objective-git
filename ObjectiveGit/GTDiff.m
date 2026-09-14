@@ -20,6 +20,7 @@
 #import "git2/errors.h"
 #import "git2/deprecated.h"
 
+NSString *const GTDiffOptionsFlagsKey = @"GTDiffOptionsFlagsKey";
 NSString *const GTDiffOptionsContextLinesKey = @"GTDiffOptionsContextLinesKey";
 NSString *const GTDiffOptionsInterHunkLinesKey = @"GTDiffOptionsInterHunkLinesKey";
 NSString *const GTDiffOptionsOldPrefixKey = @"GTDiffOptionsOldPrefixKey";
