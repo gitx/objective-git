@@ -25,7 +25,11 @@ main() {
 
   if [ -n "$REQUIRED_TOOLS" ]; then
     echo "** Checking dependencies in Homebrew ..."
-    check_deps
+    if [ -n "$UNIVERSAL_BUILD" ]; then
+      check_deps_universal
+    else
+      check_deps
+    fi
   fi
 }
 
@@ -60,27 +64,8 @@ check_deps() {
     export expected_prefix=/usr/local
   fi
 
-  # Ensure that we have libgit2's dependencies installed.
-  installed=$(brew list)
-
-  for tool in $REQUIRED_TOOLS; do
-    # Skip packages that are already installed.
-    echo "$installed" | grep -q "$tool" && code=$? || code=$?
-
-    if [ "$code" -eq "0" ]; then
-      echo "*** $tool is available 👍"
-      continue
-    elif [ "$code" -ne "1" ]; then
-      exit $code
-    fi
-
-    echo "*** Installing $tool with Homebrew..."
-    brew install "$tool"
-  done
-
-  install_path="./External"
-  echo "*** copy "$brew_prefix"/lib/libssh2.a to $install_path"
-  cp "$brew_prefix"/lib/libssh2.a $install_path
+  install_tools "$brew_prefix"
+  stage_deps "$brew_prefix" "./External"
 
   if [ "$brew_prefix" != "$expected_prefix" ]; then
     echo "*** Adding soft links into $expected_prefix..."
@@ -97,12 +82,85 @@ check_deps() {
       sudo ln -s "$brew_prefix/$product" "$destination"
     done
   fi
+}
+
+# Builds a universal libcrypto.a/libssh2.a by lipo-ing together the arm64
+# Homebrew install at /opt/homebrew with an x86_64 (Rosetta) Homebrew install
+# at /usr/local. Both installs, and the tools under each, are expected to
+# already exist -- setting them up is the CI workflow's job, not this
+# script's, since it means bootstrapping a second Homebrew prefix.
+check_deps_universal() {
+  local arm64_prefix=/opt/homebrew
+  local x86_64_prefix=/usr/local
+
+  for prefix in "$arm64_prefix" "$x86_64_prefix"; do
+    if [ ! -x "$prefix/bin/brew" ]; then
+      echo "UNIVERSAL_BUILD requires a Homebrew install at $prefix; none found." >&2
+      exit 1
+    fi
+  done
+
+  install_tools "$arm64_prefix"
+  install_tools "$x86_64_prefix" arch -x86_64
+
+  local staging="./External/universal-deps"
+  rm -rf "$staging"
+  mkdir -p "$staging/arm64" "$staging/x86_64"
+
+  stage_deps "$arm64_prefix" "$staging/arm64"
+  stage_deps "$x86_64_prefix" "$staging/x86_64"
+
+  echo "*** Combining arm64 + x86_64 libssh2.a and libcrypto.a into universal libraries"
+  for lib in libssh2.a libcrypto.a; do
+    lipo -create \
+      "$staging/arm64/$lib" \
+      "$staging/x86_64/$lib" \
+      -output "./External/$lib"
+  done
+
+  rm -rf "$staging"
+  ls -la ./External
+}
+
+# install_tools <brew_prefix> [command prefix to run brew under, e.g. `arch -x86_64`]
+install_tools() {
+  local prefix="$1"
+  shift
+  local run=("$@" "$prefix/bin/brew")
+
+  local installed
+  installed=$("${run[@]}" list)
+
+  for tool in $REQUIRED_TOOLS; do
+    echo "$installed" | grep -q "$tool" && code=$? || code=$?
+
+    if [ "$code" -eq "0" ]; then
+      echo "*** $tool is available under $prefix 👍"
+      continue
+    elif [ "$code" -ne "1" ]; then
+      exit $code
+    fi
+
+    echo "*** Installing $tool under $prefix with Homebrew..."
+    "${run[@]}" install "$tool"
+  done
+}
+
+# stage_deps <brew_prefix> <destination dir> - copies that prefix's
+# libssh2.a/libcrypto.a into destination, for either direct use (single-arch)
+# or as lipo input (universal).
+stage_deps() {
+  local prefix="$1"
+  local destination="$2"
+
+  echo "*** copy $prefix/lib/libssh2.a to $destination"
+  cp "$prefix/lib/libssh2.a" "$destination"
 
   # openssl@1 is expected
-  sslSource=$(find $brew_prefix -name libcrypto.a | grep openssl | sort | head -1 | xargs dirname)
-  echo "Find libcrypto.a and take first $sslSource and copy to $install_path"
-  cp $sslSource/* $install_path 2>/dev/null | echo "Copy and ignore subdirectory. This makes build work on x86 and arm64"
-  ls -la $install_path
+  local sslSource
+  sslSource=$(find "$prefix" -name libcrypto.a | grep openssl | sort | head -1 | xargs dirname)
+  echo "Find libcrypto.a and take first $sslSource and copy to $destination"
+  cp $sslSource/* "$destination" 2>/dev/null | echo "Copy and ignore subdirectory. This makes build work on x86 and arm64"
 }
 
 main

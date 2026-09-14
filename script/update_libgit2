@@ -4,39 +4,87 @@ set -e
 
 cd "External/libgit2"
 
-if [ -d "build" ]; then
-  rm -rf "build"
-fi
+build_arch() {
+  arch_name="$1"
+  arch_prefix="$2"
+  runner="$3" # e.g. `arch -x86_64`, or empty for native
 
-mkdir build
-cd build
+  build_dir="build-$arch_name"
+  rm -rf "$build_dir"
+  mkdir "$build_dir"
+  cd "$build_dir"
 
-# OpenSSL is keg-only, so add its pkgconfig location manually
-if [[ $(uname -m) == 'arm64' ]]; then
-  echo "Running on a Apple Silicon M1"
-  export ARCH_PREFIX=/opt/homebrew
+  export PKG_CONFIG_PATH="$arch_prefix/opt/openssl/lib/pkgconfig:$arch_prefix/lib/pkgconfig"
+
+  # augment path to help it find cmake installed in /usr/local/bin,
+  # e.g. via brew. Xcode's Run Script phase doesn't seem to honor
+  # ~/.MacOSX/environment.plist
+  PATH="$arch_prefix/bin:$PATH"
+
+  $runner cmake --version
+  $runner cmake -DBUILD_SHARED_LIBS:BOOL=OFF \
+    -DBUILD_CLAR:BOOL=OFF \
+    -DTHREADSAFE:BOOL=ON \
+    -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
+    -DCMAKE_OSX_ARCHITECTURES="$arch_name" \
+    ..
+  $runner cmake --build .
+
+  cd ..
+}
+
+if [ -n "$UNIVERSAL_BUILD" ]; then
+  # Requires a native arm64 Homebrew at /opt/homebrew and an x86_64 (Rosetta)
+  # Homebrew at /usr/local, each with openssl installed -- see script/bootstrap.
+  build_arch arm64 /opt/homebrew ""
+  build_arch x86_64 /usr/local "arch -x86_64"
+
+  product="libgit2.a"
+  install_path="../../${product}"
+  rm -rf "$install_path"
+  lipo -create \
+    "build-arm64/${product}" \
+    "build-x86_64/${product}" \
+    -output "$install_path"
+
+  rm -rf build-arm64 build-x86_64
+
+  echo "Universal libgit2 has been updated."
 else
-  echo "Running on a Apple x86"
-  export ARCH_PREFIX=/usr/local
+  if [ -d "build" ]; then
+    rm -rf "build"
+  fi
+
+  mkdir build
+  cd build
+
+  # OpenSSL is keg-only, so add its pkgconfig location manually
+  if [[ $(uname -m) == 'arm64' ]]; then
+    echo "Running on a Apple Silicon M1"
+    export ARCH_PREFIX=/opt/homebrew
+  else
+    echo "Running on a Apple x86"
+    export ARCH_PREFIX=/usr/local
+  fi
+  export PKG_CONFIG_PATH=$ARCH_PREFIX/opt/openssl/lib/pkgconfig:$ARCH_PREFIX/lib/pkgconfig
+
+  # augment path to help it find cmake installed in /usr/local/bin,
+  # e.g. via brew. Xcode's Run Script phase doesn't seem to honor
+  # ~/.MacOSX/environment.plist
+  PATH="$ARCH_PREFIX/bin:$PATH"
+
+  cmake --version
+  cmake -DBUILD_SHARED_LIBS:BOOL=OFF \
+    -DBUILD_CLAR:BOOL=OFF \
+    -DTHREADSAFE:BOOL=ON \
+    -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
+    ..
+  cmake --build .
+
+  product="libgit2.a"
+  install_path="../../${product}"
+  rm -rf $install_path
+  cp -v "${product}" "${install_path}"
+
+  echo "libgit2 has been updated."
 fi
-export PKG_CONFIG_PATH=$ARCH_PREFIX/opt/openssl/lib/pkgconfig:$ARCH_PREFIX/lib/pkgconfig
-
-# augment path to help it find cmake installed in /usr/local/bin,
-# e.g. via brew. Xcode's Run Script phase doesn't seem to honor
-# ~/.MacOSX/environment.plist
-PATH="$ARCH_PREFIX/bin:$PATH"
-
-cmake --version
-cmake -DBUILD_SHARED_LIBS:BOOL=OFF \
-  -DBUILD_CLAR:BOOL=OFF \
-  -DTHREADSAFE:BOOL=ON \
-  -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
-  ..
-cmake --build .
-
-product="libgit2.a"
-install_path="../../${product}"
-rm -rf $install_path
-cp -v "${product}" "${install_path}"
-
-echo "libgit2 has been updated."
