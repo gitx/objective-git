@@ -11,6 +11,7 @@
 
 #import "git2/errors.h"
 #import "git2/odb.h"
+#import "git2/deprecated.h"
 
 @interface GTOID () {
 	git_oid _git_oid;

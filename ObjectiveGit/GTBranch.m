@@ -37,6 +37,7 @@
 #import "git2/branch.h"
 #import "git2/errors.h"
 #import "git2/graph.h"
+#import "git2/deprecated.h"
 
 @implementation GTBranch
 

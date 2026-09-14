@@ -35,6 +35,7 @@
 #import "GTRepository+References.h"
 
 #import "git2/errors.h"
+#import "git2/deprecated.h"
 
 @interface GTReference ()
 @property (nonatomic, readonly, assign) git_reference *git_reference;

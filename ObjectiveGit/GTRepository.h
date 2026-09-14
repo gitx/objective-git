@@ -56,15 +56,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Transport flags sent as options to +cloneFromURL... method
-typedef NS_OPTIONS(NSInteger, GTTransportFlags) {
-	GTTransportFlagsNone = GIT_TRANSPORTFLAGS_NONE
-};
-
-/// An `NSNumber` wrapped `GTTransportFlags`, documented above.
-/// Default value is `GTTransportFlagsNone`.
-extern NSString * const GTRepositoryCloneOptionsTransportFlags;
-
 /// An `NSNumber` wrapped `BOOL`, if YES, create a bare clone.
 /// Default value is `NO`.
 extern NSString * const GTRepositoryCloneOptionsBare;
@@ -226,7 +217,6 @@ typedef NS_ENUM(NSInteger, GTRepositoryStateType) {
 /// originURL             - The URL to clone from. Must not be nil.
 /// workdirURL            - A URL to the desired working directory on the local machine. Must not be nil.
 /// options               - A dictionary consisting of the options:
-///                         `GTRepositoryCloneOptionsTransportFlags`,
 ///                         `GTRepositoryCloneOptionsBare`,
 ///                         `GTRepositoryCloneOptionsPerformCheckout`,
 ///                         `GTRepositoryCloneOptionsCheckoutOptions`,

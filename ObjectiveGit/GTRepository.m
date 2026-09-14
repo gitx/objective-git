@@ -62,7 +62,6 @@
 NSString * const GTRepositoryCloneOptionsBare = @"GTRepositoryCloneOptionsBare";
 NSString * const GTRepositoryCloneOptionsPerformCheckout = @"GTRepositoryCloneOptionsPerformCheckout";
 NSString * const GTRepositoryCloneOptionsCheckoutOptions = @"GTRepositoryCloneOptionsCheckoutOptions";
-NSString * const GTRepositoryCloneOptionsTransportFlags = @"GTRepositoryCloneOptionsTransportFlags";
 NSString * const GTRepositoryCloneOptionsCredentialProvider = @"GTRepositoryCloneOptionsCredentialProvider";
 NSString * const GTRepositoryCloneOptionsCloneLocal = @"GTRepositoryCloneOptionsCloneLocal";
 NSString * const GTRepositoryCloneOptionsServerCertificateURL = @"GTRepositoryCloneOptionsServerCertificateURL";

@@ -24,6 +24,7 @@
 #import "git2/remote.h"
 #import "git2/notes.h"
 #import "git2/buffer.h"
+#import "git2/deprecated.h"
 
 NSString *const GTRepositoryRemoteOptionsCredentialProvider = @"GTRepositoryRemoteOptionsCredentialProvider";
 NSString *const GTRepositoryRemoteOptionsFetchPrune = @"GTRepositoryRemoteOptionsFetchPrune";

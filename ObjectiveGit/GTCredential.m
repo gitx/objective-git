@@ -12,6 +12,7 @@
 
 #import "git2/errors.h"
 #import "git2/deprecated.h"
+#import "git2/sys/errors.h"
 
 typedef GTCredential *(^GTCredentialProviderBlock)(GTCredentialType allowedTypes, NSString *URL, NSString *userName);
 

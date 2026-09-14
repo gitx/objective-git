@@ -17,6 +17,7 @@
 #import "EXTScope.h"
 
 #import "git2/errors.h"
+#import "git2/deprecated.h"
 
 NSString * const GTRemoteRenameProblematicRefSpecs = @"GTRemoteRenameProblematicRefSpecs";
 
