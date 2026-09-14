@@ -28,7 +28,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "git2/oid.h"
+#import <git2/oid.h>
 
 @class GTSignature;
 @class GTRepository;

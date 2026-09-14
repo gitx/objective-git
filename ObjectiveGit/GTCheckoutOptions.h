@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "git2/checkout.h"
+#import <git2/checkout.h>
 
 @class GTDiffFile;
 
