@@ -18,7 +18,7 @@
 #import "EXTScope.h"
 
 #import "git2/errors.h"
-#import "git2/deprecated.h"
+#import "git2/strarray.h"
 
 NSString *const GTDiffOptionsFlagsKey = @"GTDiffOptionsFlagsKey";
 NSString *const GTDiffOptionsContextLinesKey = @"GTDiffOptionsContextLinesKey";
@@ -72,7 +72,7 @@ NSString *const GTDiffFindOptionsRenameLimitKey = @"GTDiffFindOptionsRenameLimit
 	git_strarray strArray = pathSpec.git_strarray;
 	if (pathSpec != nil) newOptions.pathspec = strArray;
 	@onExit {
-		git_strarray_free((git_strarray *)&strArray);
+		git_strarray_dispose((git_strarray *)&strArray);
 	};
 
 	git_diff_options *optionsPtr = &newOptions;

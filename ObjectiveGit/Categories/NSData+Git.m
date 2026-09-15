@@ -35,18 +35,14 @@
 
 	if (buffer->size == 0) return [self data];
 
-	// Ensure that the buffer is actually allocated dynamically, not pointing to
-	// some data which may disappear.
-	if (git_buf_grow(buffer, 0) != GIT_OK) return nil;
-	
 	NSData *data = [self dataWithBytesNoCopy:buffer->ptr length:buffer->size freeWhenDone:YES];
-	*buffer = (git_buf)GIT_BUF_INIT_CONST(0, NULL);
+	*buffer = (git_buf)GIT_BUF_INIT;
 
 	return data;
 }
 
 - (git_buf)git_buf {
-	return (git_buf)GIT_BUF_INIT_CONST((void *)self.bytes, self.length);
+	return (git_buf){ (char *)self.bytes, 0, self.length };
 }
 
 - (BOOL)git_containsNUL {
