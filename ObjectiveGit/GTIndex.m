@@ -41,6 +41,7 @@
 #import "NSError+Git.h"
 
 #import "git2/errors.h"
+#import "git2/deprecated.h"
 
 // The block synonymous with libgit2's `git_index_matched_path_cb` callback.
 typedef BOOL (^GTIndexPathspecMatchedBlock)(NSString *matchedPathspec, NSString *path, BOOL *stop);

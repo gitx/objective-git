@@ -9,6 +9,7 @@
 #import "GTDiffPatch.h"
 
 #import "GTDiffHunk.h"
+#import "git2/deprecated.h"
 
 @interface GTDiffPatch ()
 

@@ -8,7 +8,7 @@
 
 #import "GTRepository.h"
 #import "GTIndexEntry.h"
-#import "git2/merge.h"
+#import <git2/merge.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

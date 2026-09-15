@@ -14,6 +14,7 @@
 #import "NSError+Git.h"
 
 #import "git2/errors.h"
+#import "git2/deprecated.h"
 
 @interface GTFilterList ()
 

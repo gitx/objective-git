@@ -11,6 +11,7 @@
 
 #import "git2/errors.h"
 #import "git2/odb.h"
+#import "git2/deprecated.h"
 
 @interface GTOID () {
 	git_oid _git_oid;
@@ -98,7 +99,7 @@
 }
 
 - (BOOL)isZero {
-	return git_oid_iszero(self.git_oid) != 0;
+	return git_oid_is_zero(self.git_oid) != 0;
 }
 
 #pragma mark NSObject

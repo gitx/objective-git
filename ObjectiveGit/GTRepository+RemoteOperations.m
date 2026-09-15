@@ -24,13 +24,14 @@
 #import "git2/remote.h"
 #import "git2/notes.h"
 #import "git2/buffer.h"
+#import "git2/deprecated.h"
 
 NSString *const GTRepositoryRemoteOptionsCredentialProvider = @"GTRepositoryRemoteOptionsCredentialProvider";
 NSString *const GTRepositoryRemoteOptionsFetchPrune = @"GTRepositoryRemoteOptionsFetchPrune";
 NSString *const GTRepositoryRemoteOptionsDownloadTags = @"GTRepositoryRemoteOptionsDownloadTags";
 NSString *const GTRepositoryRemoteOptionsPushNotes = @"GTRepositoryRemoteOptionsPushNotes";
 
-typedef void (^GTRemoteFetchTransferProgressBlock)(const git_transfer_progress *stats, BOOL *stop);
+typedef void (^GTRemoteFetchTransferProgressBlock)(const git_indexer_progress *stats, BOOL *stop);
 typedef void (^GTRemotePushTransferProgressBlock)(unsigned int current, unsigned int total, size_t bytes, BOOL *stop);
 
 @implementation GTRepository (RemoteOperations)
@@ -45,7 +46,7 @@ typedef struct {
 	git_direction direction;
 } GTRemoteConnectionInfo;
 
-int GTRemoteFetchTransferProgressCallback(const git_transfer_progress *stats, void *payload) {
+int GTRemoteFetchTransferProgressCallback(const git_indexer_progress *stats, void *payload) {
 	GTRemoteConnectionInfo *info = payload;
 	BOOL stop = NO;
 
@@ -281,7 +282,7 @@ int GTFetchHeadEntriesCallback(const char *ref_name, const char *remote_url, con
 
 	git_push_options push_options = GIT_PUSH_OPTIONS_INIT;
 
-	gitError = git_push_init_options(&push_options, GIT_PUSH_OPTIONS_VERSION);
+	gitError = git_push_options_init(&push_options, GIT_PUSH_OPTIONS_VERSION);
 	if (gitError != GIT_OK) {
 		if (error != NULL) *error = [NSError git_errorFor:gitError description:@"Failed to init push options"];
 		return NO;

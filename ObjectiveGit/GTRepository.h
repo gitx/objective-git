@@ -35,10 +35,10 @@
 #import "GTReference.h"
 #import "GTFilterList.h"
 #import "GTCheckoutOptions.h"
-#import "git2/checkout.h"
-#import "git2/repository.h"
-#import "git2/transport.h"
-#import "git2/sys/transport.h"
+#import <git2/checkout.h>
+#import <git2/repository.h>
+#import <git2/transport.h>
+#import <git2/sys/transport.h>
 
 @class GTBlob;
 @class GTCommit;
@@ -55,15 +55,6 @@
 @class GTNote;
 
 NS_ASSUME_NONNULL_BEGIN
-
-/// Transport flags sent as options to +cloneFromURL... method
-typedef NS_OPTIONS(NSInteger, GTTransportFlags) {
-	GTTransportFlagsNone = GIT_TRANSPORTFLAGS_NONE
-};
-
-/// An `NSNumber` wrapped `GTTransportFlags`, documented above.
-/// Default value is `GTTransportFlagsNone`.
-extern NSString * const GTRepositoryCloneOptionsTransportFlags;
 
 /// An `NSNumber` wrapped `BOOL`, if YES, create a bare clone.
 /// Default value is `NO`.
@@ -226,7 +217,6 @@ typedef NS_ENUM(NSInteger, GTRepositoryStateType) {
 /// originURL             - The URL to clone from. Must not be nil.
 /// workdirURL            - A URL to the desired working directory on the local machine. Must not be nil.
 /// options               - A dictionary consisting of the options:
-///                         `GTRepositoryCloneOptionsTransportFlags`,
 ///                         `GTRepositoryCloneOptionsBare`,
 ///                         `GTRepositoryCloneOptionsPerformCheckout`,
 ///                         `GTRepositoryCloneOptionsCheckoutOptions`,
@@ -239,7 +229,7 @@ typedef NS_ENUM(NSInteger, GTRepositoryStateType) {
 ///                         May be NULL.
 ///
 /// returns nil (and fills the error parameter) if an error occurred, or a GTRepository object if successful.
-+ (instancetype _Nullable)cloneFromURL:(NSURL *)originURL toWorkingDirectory:(NSURL *)workdirURL options:(NSDictionary * _Nullable)options error:(NSError **)error transferProgressBlock:(void (^ _Nullable)(const git_transfer_progress *, BOOL *stop))transferProgressBlock;
++ (instancetype _Nullable)cloneFromURL:(NSURL *)originURL toWorkingDirectory:(NSURL *)workdirURL options:(NSDictionary * _Nullable)options error:(NSError **)error transferProgressBlock:(void (^ _Nullable)(const git_indexer_progress *, BOOL *stop))transferProgressBlock;
 
 /// Lookup objects in the repo by oid or sha1
 - (id _Nullable)lookUpObjectByOID:(GTOID *)oid objectType:(GTObjectType)type error:(NSError **)error;
