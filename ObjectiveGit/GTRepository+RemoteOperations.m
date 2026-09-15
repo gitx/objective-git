@@ -24,7 +24,6 @@
 #import "git2/remote.h"
 #import "git2/notes.h"
 #import "git2/buffer.h"
-#import "git2/deprecated.h"
 
 NSString *const GTRepositoryRemoteOptionsCredentialProvider = @"GTRepositoryRemoteOptionsCredentialProvider";
 NSString *const GTRepositoryRemoteOptionsFetchPrune = @"GTRepositoryRemoteOptionsFetchPrune";
@@ -98,7 +97,7 @@ int GTRemotePushTransferProgressCallback(unsigned int current, unsigned int tota
 	}
 
 	@onExit {
-		git_strarray_free(&refspecs);
+		git_strarray_dispose(&refspecs);
 	};
 
 	NSString *reflog_message = [NSString stringWithFormat:@"fetching remote %@", remote.name];

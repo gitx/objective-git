@@ -36,7 +36,6 @@
 
 #import "git2/blob.h"
 #import "git2/errors.h"
-#import "git2/deprecated.h"
 
 @implementation GTBlob
 
@@ -85,7 +84,7 @@
 	NSParameterAssert(repository != nil);
 
 	git_oid oid;
-	int gitError = git_blob_create_frombuffer(&oid, repository.git_repository, [data bytes], data.length);
+	int gitError = git_blob_create_from_buffer(&oid, repository.git_repository, [data bytes], data.length);
 	if(gitError < GIT_OK) {
 		if(error != NULL) {
 			*error = [NSError git_errorFor:gitError description:@"Failed to create blob from NSData"];
@@ -101,7 +100,7 @@
 	NSParameterAssert(repository != nil);
 
 	git_oid oid;
-	int gitError = git_blob_create_fromdisk(&oid, repository.git_repository, [[file path] fileSystemRepresentation]);
+	int gitError = git_blob_create_from_disk(&oid, repository.git_repository, [[file path] fileSystemRepresentation]);
 	if(gitError < GIT_OK) {
 		if(error != NULL) {
 			*error = [NSError git_errorFor:gitError description:@"Failed to create blob from NSURL"];
@@ -137,8 +136,9 @@
 - (NSData *)applyFiltersForPath:(NSString *)path error:(NSError **)error {
 	NSCParameterAssert(path != nil);
 
-	git_buf buffer = GIT_BUF_INIT_CONST(0, NULL);
-	int gitError = git_blob_filtered_content(&buffer, self.git_blob, path.UTF8String, 1);
+	git_buf buffer = GIT_BUF_INIT;
+	git_blob_filter_options opts = GIT_BLOB_FILTER_OPTIONS_INIT;
+	int gitError = git_blob_filter(&buffer, self.git_blob, path.UTF8String, &opts);
 	if (gitError != GIT_OK) {
 		if (error != NULL) *error = [NSError git_errorFor:gitError description:@"Failed to apply filters for path %@ to blob", path];
 		return nil;

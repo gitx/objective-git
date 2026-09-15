@@ -9,7 +9,7 @@
 #import "GTDiffPatch.h"
 
 #import "GTDiffHunk.h"
-#import "git2/deprecated.h"
+#import "git2/buffer.h"
 
 @interface GTDiffPatch ()
 
@@ -66,7 +66,7 @@
 }
 
 - (NSData *)patchData {
-	git_buf buf = GIT_BUF_INIT_CONST(0, NULL);
+	git_buf buf = GIT_BUF_INIT;
 	git_patch_to_buf(&buf, self.git_patch);
 
 	NSData *buffer = [[NSData alloc] initWithBytes:buf.ptr length:buf.size];
