@@ -11,7 +11,6 @@
 
 #import "git2/errors.h"
 #import "git2/odb.h"
-#import "git2/deprecated.h"
 
 @interface GTOID () {
 	git_oid _git_oid;
@@ -30,7 +29,7 @@
 - (NSString *)SHA {
 	char *SHA = git_oid_tostr_s(self.git_oid);
 	NSString *str = [[NSString alloc] initWithBytes:SHA
-                                             length:GIT_OID_HEXSZ
+                                             length:GIT_OID_SHA1_HEXSIZE
                                            encoding:NSUTF8StringEncoding];
 	NSAssert(str != nil, @"Failed to create SHA string");
 	return str;
@@ -110,7 +109,7 @@
 
 - (NSUInteger)hash {
 	// Hash the raw OID.
-	NSData *data = [[NSData alloc] initWithBytesNoCopy:_git_oid.id length:GIT_OID_RAWSZ freeWhenDone:NO];
+	NSData *data = [[NSData alloc] initWithBytesNoCopy:_git_oid.id length:GIT_OID_SHA1_SIZE freeWhenDone:NO];
 	return data.hash;
 }
 

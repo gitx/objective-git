@@ -35,7 +35,7 @@
 #import "GTRepository+References.h"
 
 #import "git2/errors.h"
-#import "git2/deprecated.h"
+#import "git2/refs.h"
 
 @interface GTReference ()
 @property (nonatomic, readonly, assign) git_reference *git_reference;
@@ -235,7 +235,9 @@ static NSString *referenceTypeToString(GTReferenceType type) {
 }
 
 + (BOOL)isValidReferenceName:(NSString *)refName {
-	return git_reference_is_valid_name(refName.UTF8String) == 1;
+	int valid = 0;
+	int result = git_reference_name_is_valid(&valid, refName.UTF8String);
+	return (result == 0 && valid == 1);
 }
 
 #pragma mark NSObject
