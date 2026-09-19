@@ -5,8 +5,8 @@
 #import "NSData+Git.h"
 #import "NSError+Git.h"
 
+#import "git2/blob.h"
 #import "git2/errors.h"
-#import "git2/deprecated.h"
 
 @implementation NSData (Git)
 
@@ -46,13 +46,11 @@
 }
 
 - (BOOL)git_containsNUL {
-	git_buf buffer = self.git_buf;
-	return git_buf_contains_nul(&buffer) > 0;
+	return memchr(self.bytes, '\0', self.length) != NULL;
 }
 
 - (BOOL)git_isBinary {
-	git_buf buffer = self.git_buf;
-	return git_buf_is_binary(&buffer) > 0;
+	return git_blob_data_is_binary(self.bytes, self.length) > 0;
 }
 
 @end
