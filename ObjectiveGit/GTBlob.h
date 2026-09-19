@@ -28,7 +28,7 @@
 //
 
 
-#import "GTObject.h"
+#import <ObjectiveGit/GTObject.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

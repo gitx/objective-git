@@ -28,7 +28,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "GTObject.h"
+#import <ObjectiveGit/GTObject.h>
 #import <git2/revwalk.h>
 
 /// Options to specify enumeration order when enumerating through a repository.
