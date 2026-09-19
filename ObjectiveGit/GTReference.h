@@ -23,7 +23,7 @@
 //  THE SOFTWARE.
 //
 
-#import "GTObject.h"
+#import <ObjectiveGit/GTObject.h>
 #import <git2/oid.h>
 
 @class GTOID;

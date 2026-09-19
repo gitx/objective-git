@@ -28,13 +28,13 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "GTBranch.h"
-#import "GTEnumerator.h"
-#import "GTFilterSource.h"
-#import "GTObject.h"
-#import "GTReference.h"
-#import "GTFilterList.h"
-#import "GTCheckoutOptions.h"
+#import <ObjectiveGit/GTBranch.h>
+#import <ObjectiveGit/GTEnumerator.h>
+#import <ObjectiveGit/GTFilterSource.h>
+#import <ObjectiveGit/GTObject.h>
+#import <ObjectiveGit/GTReference.h>
+#import <ObjectiveGit/GTFilterList.h>
+#import <ObjectiveGit/GTCheckoutOptions.h>
 #import <git2/checkout.h>
 #import <git2/repository.h>
 #import <git2/transport.h>

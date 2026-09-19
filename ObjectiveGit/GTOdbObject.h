@@ -6,7 +6,7 @@
 //  Copyright 2011 GitHub, Inc. All rights reserved.
 //
 
-#import "GTObject.h"
+#import <ObjectiveGit/GTObject.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
