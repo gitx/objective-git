@@ -40,7 +40,7 @@ typedef GTCredential *(^GTCredentialProviderBlock)(GTCredentialType allowedTypes
 @end
 
 @interface GTCredential ()
-@property (nonatomic, assign, readonly) git_credential *git_cred;
+@property (nonatomic, assign, readonly) git_credential *git_credential;
 @end
 
 @implementation GTCredential
@@ -91,7 +91,7 @@ typedef GTCredential *(^GTCredentialProviderBlock)(GTCredentialType allowedTypes
 
 	if (self == nil) return nil;
 
-	_git_cred = cred;
+	_git_credential = cred;
 
 	return self;
 }
@@ -119,6 +119,6 @@ int GTCredentialAcquireCallback(git_credential **cred, const char *url, const ch
 		return GIT_ERROR;
 	}
 
-	*cred = gtCred.git_cred;
+	*cred = gtCred.git_credential;
 	return GIT_OK;
 }
