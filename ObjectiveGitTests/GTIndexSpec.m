@@ -18,7 +18,7 @@ __block GTRepository *repository;
 __block GTIndex *index;
 
 beforeEach(^{
-	repository = self.testAppFixtureRepository;
+	repository = QuickSpec.current.testAppFixtureRepository;
 
 	index = [repository indexWithError:NULL];
 	expect(index).notTo(beNil());
@@ -51,7 +51,7 @@ it(@"should write to the repository and return a tree", ^{
 });
 
 it(@"should write to a specific repository and return a tree", ^{
-	GTRepository *repository = self.bareFixtureRepository;
+	GTRepository *repository = QuickSpec.current.bareFixtureRepository;
 	NSArray *branches = [repository branches:NULL];
 	GTCommit *masterCommit = [branches[0] targetCommitWithError:NULL];
 	GTCommit *packedCommit = [branches[1] targetCommitWithError:NULL];
@@ -115,13 +115,13 @@ describe(@"conflict enumeration", ^{
 	});
 
 	it(@"should correctly report conflicts", ^{
-		index = [self.conflictedFixtureRepository indexWithError:NULL];
+		index = [QuickSpec.current.conflictedFixtureRepository indexWithError:NULL];
 		expect(index).notTo(beNil());
 		expect(@(index.hasConflicts)).to(beTruthy());
 	});
 
 	it(@"should enumerate conflicts successfully", ^{
-		index = [self.conflictedFixtureRepository indexWithError:NULL];
+		index = [QuickSpec.current.conflictedFixtureRepository indexWithError:NULL];
 		expect(index).notTo(beNil());
 
 		NSError *err = NULL;
@@ -141,8 +141,8 @@ describe(@"conflict enumeration", ^{
 describe(@"updating pathspecs", ^{
 	NSString *fileName = @"REAME_";
 	beforeEach(^{
-		index = [self.testAppFixtureRepository indexWithError:NULL];
-		NSString *filePath = [self.testAppFixtureRepository.fileURL.path stringByAppendingPathComponent:fileName];
+		index = [QuickSpec.current.testAppFixtureRepository indexWithError:NULL];
+		NSString *filePath = [QuickSpec.current.testAppFixtureRepository.fileURL.path stringByAppendingPathComponent:fileName];
 		[@"The wild west..." writeToFile:filePath atomically:NO encoding:NSUTF8StringEncoding error:NULL];
 
 		expect(index).notTo(beNil());
@@ -175,7 +175,7 @@ describe(@"updating pathspecs", ^{
 
 	it(@"should stop be able to stop early", ^{
 		NSString *otherFileName = @"TestAppDelegate.h";
-		[@"WELP" writeToFile:[self.testAppFixtureRepository.fileURL.path stringByAppendingPathComponent:otherFileName] atomically:NO encoding:NSUTF8StringEncoding error:NULL];
+		[@"WELP" writeToFile:[QuickSpec.current.testAppFixtureRepository.fileURL.path stringByAppendingPathComponent:otherFileName] atomically:NO encoding:NSUTF8StringEncoding error:NULL];
 		BOOL success = [index updatePathspecs:NULL error:NULL passingTest:^(NSString *matchedPathspec, NSString *path, BOOL *stop) {
 			if ([path.lastPathComponent isEqualToString:fileName]) {
 				*stop = YES;
@@ -212,7 +212,7 @@ describe(@"adding files", ^{
 
 	beforeEach(^{
 		expect(filename).to(equal([filename precomposedStringWithCanonicalMapping]));
-		repo = self.testUnicodeFixtureRepository;
+		repo = QuickSpec.current.testUnicodeFixtureRepository;
 		configuration = [repo configurationWithError:NULL];
 
 		[configuration setBool:false forKey:@"core.precomposeunicode"];
@@ -310,7 +310,7 @@ describe(@"adding data", ^{
 	
 	beforeEach(^{
 		error = nil;
-		repo = self.testUnicodeFixtureRepository;
+		repo = QuickSpec.current.testUnicodeFixtureRepository;
 		// Not sure why but it doesn't work with an in memory index
 		// index = [GTIndex inMemoryIndexWithRepository:repo error:&error];
 		index = [repo indexWithError:&error];
@@ -329,7 +329,7 @@ describe(@"adding data", ^{
 });
 
 afterEach(^{
-	[self tearDown];
+	[QuickSpec.current tearDown];
 });
 
 QuickSpecEnd

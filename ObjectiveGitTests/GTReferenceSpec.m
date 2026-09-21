@@ -17,7 +17,7 @@ QuickSpecBegin(GTReferenceSpec)
 __block GTRepository *repository;
 
 beforeEach(^{
-	repository = self.testAppFixtureRepository;
+	repository = QuickSpec.current.testAppFixtureRepository;
 	expect(repository).notTo(beNil());
 });
 
@@ -58,7 +58,7 @@ describe(@"transformations", ^{
 	__block GTReference *reference;
 
 	beforeEach(^{
-		GTRepository *repository = self.bareFixtureRepository;
+		GTRepository *repository = QuickSpec.current.bareFixtureRepository;
 		expect(repository).notTo(beNil());
 
 		NSError *error;
@@ -125,7 +125,7 @@ void (^expectValidReference)(GTReference *ref, NSString *SHA, GTReferenceType ty
 };
 
 beforeEach(^{
-	bareRepository = self.bareFixtureRepository;
+	bareRepository = QuickSpec.current.bareFixtureRepository;
 });
 
 describe(@"+referenceByLookingUpReferenceNamed:inRepository:error:", ^{
@@ -191,7 +191,7 @@ describe(@"-deleteWithError:", ^{
 });
 
 afterEach(^{
-	[self tearDown];
+	[QuickSpec.current tearDown];
 });
 
 QuickSpecEnd

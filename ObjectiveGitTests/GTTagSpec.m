@@ -18,7 +18,7 @@ __block GTTag *tag;
 
 beforeEach(^{
 	NSError *error = nil;
-	GTRepository *repo = self.bareFixtureRepository;
+	GTRepository *repo = QuickSpec.current.bareFixtureRepository;
 	NSString *tagSHA = @"0c37a5391bbff43c37f0d0371823a5509eed5b1d";
 	tag = (GTTag *)[repo lookUpObjectBySHA:tagSHA error:&error];
 	expect(error).to(beNil());
@@ -52,7 +52,7 @@ it(@"can delete tags", ^{
 });
 
 afterEach(^{
-	[self tearDown];
+	[QuickSpec.current tearDown];
 });
 
 QuickSpecEnd

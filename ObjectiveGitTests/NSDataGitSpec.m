@@ -68,7 +68,7 @@ describe(@"git_buf", ^{
 });
 
 afterEach(^{
-	[self tearDown];
+	[QuickSpec.current tearDown];
 });
 
 QuickSpecEnd

@@ -21,7 +21,7 @@ __block GTConfiguration *configuration = nil;
 NSString *fetchRefspec = @"+refs/heads/*:refs/remotes/origin/*";
 
 beforeEach(^{
-	repository = self.testAppFixtureRepository;
+	repository = QuickSpec.current.testAppFixtureRepository;
 	expect(repository).notTo(beNil());
 
 	NSError *error = nil;
@@ -100,7 +100,7 @@ describe(@"network operations", ^{
 	__block NSString *remoteName;
 
 	beforeEach(^{
-		repository = self.bareFixtureRepository;
+		repository = QuickSpec.current.bareFixtureRepository;
 		expect(@(repository.isBare)).to(beFalsy()); // yeah right
 		repositoryURL = repository.gitDirectoryURL;
 		NSURL *fixturesURL = repositoryURL.URLByDeletingLastPathComponent;

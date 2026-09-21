@@ -28,7 +28,7 @@ typedef NSData * (^GTFilterApplyBlock)(void **payload, NSData *from, GTFilterSou
 __block void (^setUpFilterWithApplyBlock)(GTFilterApplyBlock block);
 
 beforeEach(^{
-	repository = self.testAppFixtureRepository;
+	repository = QuickSpec.current.testAppFixtureRepository;
 	expect(repository).notTo(beNil());
 
 	NSString *attributes = @"*.txt special\n";
@@ -184,7 +184,7 @@ it(@"should include the right filter source", ^{
 });
 
 afterEach(^{
-	[self tearDown];
+	[QuickSpec.current tearDown];
 });
 
 QuickSpecEnd

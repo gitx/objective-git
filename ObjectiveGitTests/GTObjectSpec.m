@@ -38,7 +38,7 @@ QuickSpecBegin(GTObjectSpec)
 __block GTRepository *repo;
 
 beforeEach(^{
-	repo = self.bareFixtureRepository;
+	repo = QuickSpec.current.bareFixtureRepository;
 });
 
 it(@"should fail to look up an empty string", ^{

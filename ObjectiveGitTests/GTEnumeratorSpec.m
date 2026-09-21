@@ -18,7 +18,7 @@ __block GTRepository *repo;
 __block GTEnumerator *enumerator;
 
 beforeEach(^{
-	repo = self.bareFixtureRepository;
+	repo = QuickSpec.current.bareFixtureRepository;
 	expect(repo).notTo(beNil());
 
 	enumerator = [[GTEnumerator alloc] initWithRepository:repo error:NULL];
@@ -152,7 +152,7 @@ describe(@"globbing", ^{
 });
 
 afterEach(^{
-	[self tearDown];
+	[QuickSpec.current tearDown];
 });
 
 QuickSpecEnd
