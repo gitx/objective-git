@@ -14,7 +14,7 @@ import XCTest
 // “Embedded Content Contains Swift Code” is enabled).
 // https://github.com/Quick/Quick/issues/164
 class SwiftSpec: QuickSpec {
-	override func spec() {
+	override class func spec() {
 		expect(true).to(beTruthy())
 	}
 }

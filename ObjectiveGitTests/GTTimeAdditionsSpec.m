@@ -46,7 +46,7 @@ describe(@"Conversion between git_time and NSDate", ^{
 });
 
 afterEach(^{
-	[self tearDown];
+	[QuickSpec.current tearDown];
 });
 
 QuickSpecEnd

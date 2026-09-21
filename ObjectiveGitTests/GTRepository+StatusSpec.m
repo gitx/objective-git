@@ -22,7 +22,7 @@ describe(@"Checking status", ^{
 	NSData *testData = [@"test" dataUsingEncoding:NSUTF8StringEncoding];
 
 	beforeEach(^{
-		repository = self.testAppFixtureRepository;
+		repository = QuickSpec.current.testAppFixtureRepository;
 		targetFileURL = [repository.fileURL URLByAppendingPathComponent:@"main.m"];
 		expect(repository).notTo(beNil());
 	});
@@ -126,7 +126,7 @@ describe(@"Checking status", ^{
 });
 
 afterEach(^{
-	[self tearDown];
+	[QuickSpec.current tearDown];
 });
 
 QuickSpecEnd

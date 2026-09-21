@@ -18,7 +18,7 @@ __block GTRepository *repository;
 __block GTDiffDelta *delta;
 
 beforeEach(^{
-	repository = [self testAppFixtureRepository];
+	repository = [QuickSpec.current testAppFixtureRepository];
 });
 
 describe(@"blob-to-blob diffing", ^{

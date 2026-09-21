@@ -23,7 +23,7 @@ NSString *readFilterContent = @"\nthis was touched by the read-filter!";
 NSString *textFilterContent = @"\nohai text-filter!";
 
 beforeEach(^{
-	repository = self.testAppFixtureRepository;
+	repository = QuickSpec.current.testAppFixtureRepository;
 
 	NSString *attributes = @"READ* rf=true\n*.txt tf=true\n";
 	BOOL success = [attributes writeToURL:[repository.fileURL URLByAppendingPathComponent:@".gitattributes"] atomically:YES encoding:NSUTF8StringEncoding error:NULL];
@@ -144,7 +144,7 @@ describe(@"applying a list of multiple filters", ^{
 
 	it(@"should apply to a file", ^{
 		NSString *inputFilename = @"README";
-		GTRepository *inputRepo = self.conflictedFixtureRepository;
+		GTRepository *inputRepo = QuickSpec.current.conflictedFixtureRepository;
 
 		NSString *content = [NSString stringWithContentsOfURL:[inputRepo.fileURL URLByAppendingPathComponent:inputFilename] encoding:NSUTF8StringEncoding error:NULL];
 		expect(content).notTo(contain(readFilterContent));
@@ -183,7 +183,7 @@ describe(@"applying a list of multiple filters", ^{
 });
 
 afterEach(^{
-	[self tearDown];
+	[QuickSpec.current tearDown];
 });
 
 QuickSpecEnd

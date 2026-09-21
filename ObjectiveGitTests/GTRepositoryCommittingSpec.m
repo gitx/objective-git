@@ -21,7 +21,7 @@ beforeEach(^{
 	NSString *UUID = CFBridgingRelease(CFUUIDCreateString(NULL, UUIDRef));
 	CFRelease(UUIDRef);
 
-	NSURL *fileURL = [self.tempDirectoryFileURL URLByAppendingPathComponent:UUID isDirectory:NO];
+	NSURL *fileURL = [QuickSpec.current.tempDirectoryFileURL URLByAppendingPathComponent:UUID isDirectory:NO];
 	repository = [GTRepository initializeEmptyRepositoryAtFileURL:fileURL options:nil error:NULL];
 	expect(repository).notTo(beNil());
 });
@@ -56,7 +56,7 @@ it(@"can create commits", ^{
 });
 
 afterEach(^{
-	[self tearDown];
+	[QuickSpec.current tearDown];
 });
 
 QuickSpecEnd

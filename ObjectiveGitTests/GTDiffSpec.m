@@ -21,7 +21,7 @@ describe(@"GTDiff initialisation", ^{
 	__block GTCommit *secondCommit = nil;
 
 	beforeEach(^{
-		repository = self.testAppFixtureRepository;
+		repository = QuickSpec.current.testAppFixtureRepository;
 		expect(repository).notTo(beNil());
 
 		firstCommit = (GTCommit *)[repository lookUpObjectBySHA:@"8e0e65988d3007867a9f59ca8639ba975ef97e69" objectType:GTObjectTypeCommit error:NULL];
@@ -72,7 +72,7 @@ describe(@"GTDiff diffing", ^{
 	__block void (^setupDiffFromCommitSHAsAndOptions)(NSString *, NSString *, NSDictionary *) = nil;
 
 	beforeEach(^{
-		repository = self.testAppFixtureRepository;
+		repository = QuickSpec.current.testAppFixtureRepository;
 		expect(repository).notTo(beNil());
 
 		setupDiffFromCommitSHAsAndOptions = [^(NSString *firstCommitSHA, NSString *secondCommitSHA, NSDictionary *options) {
@@ -294,7 +294,7 @@ describe(@"GTDiff diffing", ^{
 });
 
 afterEach(^{
-	[self tearDown];
+	[QuickSpec.current tearDown];
 });
 
 QuickSpecEnd

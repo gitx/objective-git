@@ -59,7 +59,7 @@ it(@"should keep the git_signature alive even if the object goes out of scope", 
 });
 
 afterEach(^{
-	[self tearDown];
+	[QuickSpec.current tearDown];
 });
 
 QuickSpecEnd

@@ -20,7 +20,7 @@ __block GTBlob *blob;
 
 describe(@"blob properties can be accessed", ^{
 	beforeEach(^{
-		repository = self.bareFixtureRepository;
+		repository = QuickSpec.current.bareFixtureRepository;
 		blobSHA = @"fa49b077972391ad58037050f2a75f74e3671e92";
 		blob = [repository lookUpObjectBySHA:blobSHA objectType:GTObjectTypeBlob error:NULL];
 		expect(blob).notTo(beNil());
@@ -45,7 +45,7 @@ describe(@"blob properties can be accessed", ^{
 
 describe(@"blobs can be created", ^{
 	beforeEach(^{
-		repository = self.testAppFixtureRepository;
+		repository = QuickSpec.current.testAppFixtureRepository;
 	});
 
 	describe(@"+blobWithString:inRepository:error", ^{
@@ -92,7 +92,7 @@ describe(@"blobs can be created", ^{
 });
 
 afterEach(^{
-	[self tearDown];
+	[QuickSpec.current tearDown];
 });
 
 QuickSpecEnd
