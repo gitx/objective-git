@@ -199,7 +199,7 @@ int GTMergeHeadEntriesCallback(const git_oid *oid, void *payload) {
 
 	// initialize our merge file input
 	git_merge_file_input ourInput;
-	gitError = git_merge_file_options_init(&ourInput, GIT_MERGE_FILE_INPUT_VERSION);
+	gitError = git_merge_file_input_init(&ourInput, GIT_MERGE_FILE_INPUT_VERSION);
 	if (gitError != GIT_OK) {
 		if (error != NULL) *error = [NSError git_errorFor:gitError description:@"Failed to create merge file input for our side"];
 		return nil;
