@@ -28,8 +28,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#include "git2/index.h"
-#import "GTObject.h"
+#include <git2/index.h>
+#import <ObjectiveGit/GTObject.h>
 
 @class GTIndex;
 

@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 GitHub, Inc. All rights reserved.
 //
 
-#import "GTRepository.h"
+#import <ObjectiveGit/GTRepository.h>
 
-#import "git2/stash.h"
+#import <git2/stash.h>
 
 /// Flags for -stashChangesWithMessage:flags:error:.
 /// Those can be ORed together. See git_stash_flags for additional information.

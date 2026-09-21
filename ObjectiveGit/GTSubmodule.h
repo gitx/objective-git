@@ -7,10 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "GTObject.h"
+#import <ObjectiveGit/GTObject.h>
 
-#import "git2/buffer.h"
-#import "git2/submodule.h"
+#import <git2/buffer.h>
+#import <git2/submodule.h>
 
 @class GTOID;
 

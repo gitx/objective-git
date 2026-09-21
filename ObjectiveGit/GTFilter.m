@@ -13,6 +13,7 @@
 
 #import "git2/errors.h"
 #import "git2/sys/filter.h"
+#import "git2/deprecated.h"
 
 NSString * const GTFilterErrorDomain = @"GTFilterErrorDomain";
 

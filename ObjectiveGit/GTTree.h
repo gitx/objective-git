@@ -28,8 +28,8 @@
 //
 
 
-#import "GTObject.h"
-#import "git2/tree.h"
+#import <ObjectiveGit/GTObject.h>
+#import <git2/tree.h>
 
 @class GTTreeEntry;
 @class GTIndex;

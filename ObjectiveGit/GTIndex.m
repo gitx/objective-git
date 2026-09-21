@@ -41,6 +41,7 @@
 #import "NSError+Git.h"
 
 #import "git2/errors.h"
+#import "git2/index.h"
 
 // The block synonymous with libgit2's `git_index_matched_path_cb` callback.
 typedef BOOL (^GTIndexPathspecMatchedBlock)(NSString *matchedPathspec, NSString *path, BOOL *stop);
@@ -196,7 +197,7 @@ typedef BOOL (^GTIndexPathspecMatchedBlock)(NSString *matchedPathspec, NSString 
 	entry.path = [path cStringUsingEncoding:NSUTF8StringEncoding];
 	entry.mode = GIT_FILEMODE_BLOB;
 	
-	int status = git_index_add_frombuffer(self.git_index, &entry, [data bytes], [data length]);
+	int status = git_index_add_from_buffer(self.git_index, &entry, [data bytes], [data length]);
 	
 	if (status != GIT_OK) {
 		if (error != NULL) *error = [NSError git_errorFor:status description:@"Failed to add data with name %@ into index.", path];

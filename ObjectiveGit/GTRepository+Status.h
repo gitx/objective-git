@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 GitHub, Inc. All rights reserved.
 //
 
-#import "GTRepository.h"
+#import <ObjectiveGit/GTRepository.h>
 
-#import "git2/status.h"
+#import <git2/status.h>
 
 @class GTStatusDelta;
 

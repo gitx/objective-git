@@ -17,6 +17,7 @@
 #import "git2/config.h"
 #import "git2/errors.h"
 #import "git2/buffer.h"
+#import "git2/strarray.h"
 
 @interface GTConfiguration ()
 @property (nonatomic, readonly, assign) git_config *git_config;
@@ -143,7 +144,7 @@ static int configCallback(const git_config_entry *entry, void *payload) {
 		}
 	}
 
-	git_strarray_free(&names);
+	git_strarray_dispose(&names);
 
 	return remotes;
 }

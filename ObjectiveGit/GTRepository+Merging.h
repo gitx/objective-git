@@ -6,9 +6,9 @@
 //  Copyright © 2016 GitHub, Inc. All rights reserved.
 //
 
-#import "GTRepository.h"
-#import "GTIndexEntry.h"
-#import "git2/merge.h"
+#import <ObjectiveGit/GTRepository.h>
+#import <ObjectiveGit/GTIndexEntry.h>
+#import <git2/merge.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

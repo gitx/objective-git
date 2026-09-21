@@ -3,8 +3,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "git2/buffer.h"
-#import "git2/oid.h"
+#import <git2/buffer.h>
+#import <git2/oid.h>
 
 @interface NSData (Git)
 
@@ -25,12 +25,10 @@
 /// behavior of the returned buffer is undefined.
 - (git_buf)git_buf;
 
-/// Creates a git_buf from the data and then checks if the buffer contains a NUL
-/// byte.
+/// Returns whether the data contains a NUL byte.
 - (BOOL)git_containsNUL;
 
-/// Creates a git_buf from the data and then checks if the buffer looks like it
-/// contains binary data.
+/// Returns whether the data looks like it contains binary data.
 - (BOOL)git_isBinary;
 
 @end

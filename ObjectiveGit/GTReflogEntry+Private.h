@@ -6,8 +6,8 @@
 //  Copyright (c) 2013 GitHub, Inc. All rights reserved.
 //
 
-#import "GTReflogEntry.h"
-#import "git2/types.h"
+#import <ObjectiveGit/GTReflogEntry.h>
+#import <git2/types.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

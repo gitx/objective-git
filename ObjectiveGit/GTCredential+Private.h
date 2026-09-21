@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 GitHub, Inc. All rights reserved.
 //
 
-#import "GTCredential.h"
+#import <ObjectiveGit/GTCredential.h>
 
 // If you need to authenticate an operation in libgit2, you'll have to have
 // a `GTCredentialProvider` handy, like a parameter in the method you're writing,
@@ -27,4 +27,4 @@ typedef struct {
 	__unsafe_unretained GTCredentialProvider *credProvider;
 } GTCredentialAcquireCallbackInfo;
 
-int GTCredentialAcquireCallback(git_cred **cred, const char *url, const char *username_from_url, unsigned int allowed_types, void *payload);
+int GTCredentialAcquireCallback(git_credential **cred, const char *url, const char *username_from_url, unsigned int allowed_types, void *payload);

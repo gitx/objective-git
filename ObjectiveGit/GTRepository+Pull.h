@@ -6,11 +6,11 @@
 //  Copyright © 2015 GitHub, Inc. All rights reserved.
 //
 
-#import "GTRepository.h"
+#import <ObjectiveGit/GTRepository.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef void (^GTRemoteFetchTransferProgressBlock)(const git_transfer_progress *progress, BOOL *stop);
+typedef void (^GTRemoteFetchTransferProgressBlock)(const git_indexer_progress *progress, BOOL *stop);
 
 @interface GTRepository (Pull)
 
