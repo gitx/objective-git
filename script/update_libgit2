@@ -2,16 +2,45 @@
 
 set -e
 
-product="External/libgit2.a"
-newer_source=$(find External/libgit2 \
-  \( -path 'External/libgit2/.git' -o -path 'External/libgit2/build' \) -prune -o \
-  -type f -newer "$product" -print -quit 2>/dev/null || true)
-if [ -f "$product" ] && [ -z "$newer_source" ]; then
+# Resolve the repository root so the script behaves identically whether CI runs
+# it from the root or Xcode runs it from $SRCROOT.
+script_dir=$(cd "$(dirname "$0")" && pwd)
+script_path="$script_dir/$(basename "$0")"
+root=$(cd "$script_dir/.." && pwd)
+cd "$root"
+
+submodule="$root/External/libgit2"
+archive="$root/External/libgit2.a"
+stamp="$root/External/libgit2.a.stamp"
+
+# A key identifying the archive we would produce. It covers the submodule
+# revision, so switching revisions invalidates the archive even when the new
+# revision only deletes or renames sources; the submodule working tree, so
+# local edits and deletions invalidate it; the host architecture, since the
+# archive is built for the host only; and this script, so changing the cmake
+# flags invalidates it. If any part of the key cannot be computed we rebuild
+# rather than trust an archive we cannot account for.
+build_key() {
+  git -C "$submodule" rev-parse HEAD || return 1
+  git -C "$submodule" status --porcelain --untracked-files=all \
+    -- . ':(exclude)build' || return 1
+  uname -m || return 1
+  git hash-object "$script_path" || return 1
+}
+
+key=$(build_key) || key=''
+
+if [ -n "$key" ] && [ -f "$archive" ] && [ -f "$stamp" ] &&
+  [ "$key" = "$(cat "$stamp")" ]; then
   echo "libgit2 is up to date."
   exit 0
 fi
 
-cd "External/libgit2"
+# Drop the stamp before building: if the build fails or is interrupted, the
+# archive left behind must not look up to date on the next run.
+rm -f "$stamp"
+
+cd "$submodule"
 
 if [ -d "build" ]; then
   rm -rf "build"
@@ -43,9 +72,13 @@ cmake -DBUILD_SHARED_LIBS:BOOL=OFF \
   ..
 cmake --build .
 
-product="libgit2.a"
-install_path="../../${product}"
-rm -rf $install_path
-cp -v "${product}" "${install_path}"
+rm -f "$archive"
+cp -v "libgit2.a" "$archive"
+
+if [ -n "$key" ]; then
+  printf '%s\n' "$key" > "$stamp"
+else
+  echo "Could not record a libgit2 build stamp; libgit2 will be rebuilt next time." >&2
+fi
 
 echo "libgit2 has been updated."

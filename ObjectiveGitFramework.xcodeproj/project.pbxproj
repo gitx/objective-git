@@ -1386,12 +1386,11 @@
 		};
 		D0A330F116027F2300A616FA /* libgit2 */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
-				"$(SRCROOT)/script/update_libgit2",
-				"$(SRCROOT)/External/libgit2/CMakeLists.txt",
 			);
 			name = libgit2;
 			outputPaths = (

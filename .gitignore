@@ -10,6 +10,7 @@ objective-git.bridgesupport
 ObjectiveGitFramework/build/*
 ObjectiveGit-iOS.framework/*
 External/*.a
+External/*.stamp
 External/*.dylib
 
 *.pbxuser
