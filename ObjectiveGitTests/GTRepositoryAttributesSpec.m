@@ -17,7 +17,7 @@ QuickSpecBegin(GTRepositoryAttributes)
 __block GTRepository *repository;
 
 beforeEach(^{
-	repository = [self blankFixtureRepository];
+	repository = [QuickSpec.current blankFixtureRepository];
 });
 
 it(@"should be able to look up attributes", ^{

@@ -19,7 +19,7 @@ QuickSpecBegin(GTTreeBuilderSpec)
 __block GTRepository *repo;
 
 beforeEach(^{
-	repo = self.bareFixtureRepository;
+	repo = QuickSpec.current.bareFixtureRepository;
 	expect(repo).notTo(beNil());
 });
 
@@ -134,7 +134,7 @@ describe(@"GTTreeBuilder building", ^{
 });
 
 afterEach(^{
-	[self tearDown];
+	[QuickSpec.current tearDown];
 });
 
 QuickSpecEnd

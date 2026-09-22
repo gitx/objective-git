@@ -18,7 +18,7 @@ __block GTRepository *repository;
 __block GTCommit *initialCommit;
 
 beforeEach(^{
-	NSURL *fileURL = [self.tempDirectoryFileURL URLByAppendingPathComponent:[[NSUUID alloc] init].UUIDString isDirectory:NO];
+	NSURL *fileURL = [QuickSpec.current.tempDirectoryFileURL URLByAppendingPathComponent:[[NSUUID alloc] init].UUIDString isDirectory:NO];
 	repository = [GTRepository initializeEmptyRepositoryAtFileURL:fileURL options:nil error:NULL];
 	expect(repository).notTo(beNil());
 	
@@ -81,7 +81,7 @@ it(@"can delete notes", ^{
 });
 
 afterEach(^{
-	[self tearDown];
+	[QuickSpec.current tearDown];
 });
 
 QuickSpecEnd

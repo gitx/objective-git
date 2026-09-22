@@ -21,7 +21,7 @@ describe(@"pull", ^{
 	__block	GTRepository *notBareRepo;
 
 	beforeEach(^{
-		notBareRepo = self.bareFixtureRepository;
+		notBareRepo = QuickSpec.current.bareFixtureRepository;
 		expect(notBareRepo).notTo(beNil());
 		// This repo is not really "bare" according to libgit2
 		expect(@(notBareRepo.isBare)).to(beFalsy());

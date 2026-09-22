@@ -57,7 +57,7 @@ it(@"should create an error with a formatted failure reason", ^{
 });
 
 afterEach(^{
-	[self tearDown];
+	[QuickSpec.current tearDown];
 });
 
 QuickSpecEnd

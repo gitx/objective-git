@@ -17,7 +17,7 @@ QuickSpecBegin(GTObjectDatabaseSpec)
 __block GTObjectDatabase *database;
 
 beforeEach(^{
-	GTRepository *repo = self.bareFixtureRepository;
+	GTRepository *repo = QuickSpec.current.bareFixtureRepository;
 	expect(repo).notTo(beNil());
 
 	database = [repo objectDatabaseWithError:NULL];
@@ -75,7 +75,7 @@ it(@"should be able to write", ^{
 });
 
 afterEach(^{
-	[self tearDown];
+	[QuickSpec.current tearDown];
 });
 
 QuickSpecEnd

@@ -21,13 +21,13 @@ static NSString * const readme1File = @"README1.txt";
 __block GTRepository *repository;
 
 beforeEach(^{
-	repository = self.testAppFixtureRepository;
+	repository = QuickSpec.current.testAppFixtureRepository;
 	expect(repository).notTo(beNil());
 });
 
 describe(@"+initializeEmptyRepositoryAtFileURL:bare:error:", ^{
 	it(@"should initialize a repository with a working directory by default", ^{
-		NSURL *newRepoURL = [self.tempDirectoryFileURL URLByAppendingPathComponent:@"init-repo"];
+		NSURL *newRepoURL = [QuickSpec.current.tempDirectoryFileURL URLByAppendingPathComponent:@"init-repo"];
 
 		NSError *error;
 		GTRepository *repository = [GTRepository initializeEmptyRepositoryAtFileURL:newRepoURL options:nil error:&error];
@@ -39,7 +39,7 @@ describe(@"+initializeEmptyRepositoryAtFileURL:bare:error:", ^{
 	});
 
 	it(@"should initialize a bare repository", ^{
-		NSURL *newRepoURL = [self.tempDirectoryFileURL URLByAppendingPathComponent:@"init-repo.git"];
+		NSURL *newRepoURL = [QuickSpec.current.tempDirectoryFileURL URLByAppendingPathComponent:@"init-repo.git"];
 		NSDictionary *options = @{
 			GTRepositoryInitOptionsFlags: @(GTRepositoryInitBare | GTRepositoryInitCreatingRepositoryDirectory)
 		};
@@ -85,12 +85,12 @@ describe(@"+cloneFromURL:toWorkingDirectory:options:error:transferProgressBlock:
             checkoutProgressCalled = YES;
         };
 
-		workdirURL = [self.tempDirectoryFileURL URLByAppendingPathComponent:@"temp-repo"];
+		workdirURL = [QuickSpec.current.tempDirectoryFileURL URLByAppendingPathComponent:@"temp-repo"];
 	});
 
 	describe(@"with local repositories", ^{
 		beforeEach(^{
-			originURL = self.bareFixtureRepository.gitDirectoryURL;
+			originURL = QuickSpec.current.bareFixtureRepository.gitDirectoryURL;
 		});
 
 		it(@"should handle normal clones", ^{
@@ -208,7 +208,7 @@ describe(@"+cloneFromURL:toWorkingDirectory:options:error:transferProgressBlock:
 describe(@"-headReferenceWithError:", ^{
 	it(@"should allow HEAD to be looked up", ^{
 		NSError *error = nil;
-		GTReference *head = [self.bareFixtureRepository headReferenceWithError:&error];
+		GTReference *head = [QuickSpec.current.bareFixtureRepository headReferenceWithError:&error];
 		expect(head).notTo(beNil());
 		expect(error).to(beNil());
 		expect(head.targetOID.SHA).to(equal(@"36060c58702ed4c2a40832c51758d5344201d89a"));
@@ -216,7 +216,7 @@ describe(@"-headReferenceWithError:", ^{
 	});
 
 	it(@"should fail to return HEAD for an unborn repo", ^{
-		GTRepository *repo = self.blankFixtureRepository;
+		GTRepository *repo = QuickSpec.current.blankFixtureRepository;
 		expect(@(repo.isHEADUnborn)).to(beTruthy());
 
 		NSError *error = nil;
@@ -235,7 +235,7 @@ describe(@"-isEmpty", ^{
 
 	it(@"should return YES for a new repository", ^{
 		NSError *error = nil;
-		NSURL *fileURL = [self.tempDirectoryFileURL URLByAppendingPathComponent:@"newrepo"];
+		NSURL *fileURL = [QuickSpec.current.tempDirectoryFileURL URLByAppendingPathComponent:@"newrepo"];
 		GTRepository *newRepo = [GTRepository initializeEmptyRepositoryAtFileURL:fileURL options:nil error:&error];
 		expect(newRepo).notTo(beNil());
 		expect(@(newRepo.isEmpty)).to(beTruthy());
@@ -381,7 +381,7 @@ describe(@"-remoteBranchesWithError:", ^{
 describe(@"-referenceNamesWithError:", ^{
 	it(@"should return reference names", ^{
 		NSError *error = nil;
-		NSArray *refs = [self.bareFixtureRepository referenceNamesWithError:&error];
+		NSArray *refs = [QuickSpec.current.bareFixtureRepository referenceNamesWithError:&error];
 		expect(refs).notTo(beNil());
 		expect(error).to(beNil());
 
@@ -395,7 +395,7 @@ describe(@"-OIDByCreatingTagNamed:target:tagger:message:error", ^{
 	it(@"should create a new tag",^{
 		NSError *error = nil;
 		NSString *SHA = @"0c37a5391bbff43c37f0d0371823a5509eed5b1d";
-		GTRepository *repo = self.bareFixtureRepository;
+		GTRepository *repo = QuickSpec.current.bareFixtureRepository;
 		GTTag *tag = (GTTag *)[repo lookUpObjectBySHA:SHA error:&error];
 
 		GTOID *newOID = [repo OIDByCreatingTagNamed:@"a_new_tag" target:tag.target tagger:tag.tagger message:@"my tag\n" error:&error];
@@ -415,7 +415,7 @@ describe(@"-OIDByCreatingTagNamed:target:tagger:message:error", ^{
 	it(@"should fail to create an already existing tag", ^{
 		NSError *error = nil;
 		NSString *SHA = @"0c37a5391bbff43c37f0d0371823a5509eed5b1d";
-		GTRepository *repo = self.bareFixtureRepository;
+		GTRepository *repo = QuickSpec.current.bareFixtureRepository;
 		GTTag *tag = (GTTag *)[repo lookUpObjectBySHA:SHA error:&error];
 
 		GTOID *OID = [repo OIDByCreatingTagNamed:tag.name target:tag.target tagger:tag.tagger message:@"new message" error:&error];
@@ -426,7 +426,7 @@ describe(@"-OIDByCreatingTagNamed:target:tagger:message:error", ^{
 
 describe(@"move head", ^{
 	beforeEach(^{
-		repository = self.testAppFixtureRepository;
+		repository = QuickSpec.current.testAppFixtureRepository;
 	});
 
 	//- (BOOL)moveHEADToReference:(GTReference *)reference error:(NSError **)error;
@@ -576,7 +576,7 @@ describe(@"-remoteNamesWithError:", ^{
 
 describe(@"-resetToCommit:withResetType:error:", ^{
 	beforeEach(^{
-		repository = self.bareFixtureRepository;
+		repository = QuickSpec.current.bareFixtureRepository;
 	});
 
 	it(@"should move HEAD when used", ^{
@@ -654,7 +654,7 @@ describe(@"-lookUpObjectByRevParse:error:", ^{
 	};;
 
 	beforeEach(^{
-		repository = self.bareFixtureRepository;
+		repository = QuickSpec.current.bareFixtureRepository;
 	});
 
 	it(@"should parse various revspecs", ^{
@@ -671,7 +671,7 @@ describe(@"-branches:", ^{
 	__block NSArray *branches;
 
 	beforeEach(^{
-		GTRepository *repository = [self testAppForkFixtureRepository];
+		GTRepository *repository = [QuickSpec.current testAppForkFixtureRepository];
 		branches = [repository branches:NULL];
 		expect(branches).notTo(beNil());
 	});
@@ -771,7 +771,7 @@ describe(@"-userSignatureForNow", ^{
 
 describe(@"-calculateState:withError:", ^{
 	it(@"should find if the repository is mid-merge", ^{
-		GTRepository *repository = [self conflictedFixtureRepository];
+		GTRepository *repository = [QuickSpec.current conflictedFixtureRepository];
 		GTRepositoryStateType state;
 		BOOL result;
 		result = [repository calculateState:&state withError:NULL];
@@ -780,7 +780,7 @@ describe(@"-calculateState:withError:", ^{
 	});
 	
 	it(@"should return none otherwise", ^{
-		GTRepository *repository = [self testAppFixtureRepository];
+		GTRepository *repository = [QuickSpec.current testAppFixtureRepository];
 		GTRepositoryStateType state;
 		BOOL result;
 		result = [repository calculateState:&state withError:NULL];
@@ -791,7 +791,7 @@ describe(@"-calculateState:withError:", ^{
 
 describe(@"-cleanupStateWithError:", ^{
 	it(@"should return a repository to a pre-merge state", ^{
-		GTRepository *repository = [self conflictedFixtureRepository];
+		GTRepository *repository = [QuickSpec.current conflictedFixtureRepository];
 		
 		GTRepositoryStateType state;
 		BOOL result;
@@ -808,7 +808,7 @@ describe(@"-cleanupStateWithError:", ^{
 });
 
 afterEach(^{
-	[self tearDown];
+	[QuickSpec.current tearDown];
 });
 
 QuickSpecEnd

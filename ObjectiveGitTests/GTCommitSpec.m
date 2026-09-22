@@ -17,7 +17,7 @@ QuickSpecBegin(GTCommitSpec)
 __block GTRepository *repository;
 
 beforeEach(^{
-	repository = self.bareFixtureRepository;
+	repository = QuickSpec.current.bareFixtureRepository;
 });
 
 it(@"can read commit data", ^{
@@ -81,7 +81,7 @@ it(@"can identify merges", ^{
 });
 
 afterEach(^{
-	[self tearDown];
+	[QuickSpec.current tearDown];
 });
 
 QuickSpecEnd

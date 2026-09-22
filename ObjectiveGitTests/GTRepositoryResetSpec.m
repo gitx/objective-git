@@ -20,7 +20,7 @@ describe(@"-resetPathspecs:toCommit:error:", ^{
 	__block NSUInteger (^countStagedFiles)(void);
 
 	beforeEach(^{
-		repository = [self testAppFixtureRepository];
+		repository = [QuickSpec.current testAppFixtureRepository];
 
 		countStagedFiles = ^{
 			__block NSUInteger count = 0;
@@ -58,7 +58,7 @@ describe(@"-resetPathspecs:toCommit:error:", ^{
 
 describe(@"-resetToCommit:resetType:error:", ^{
 	beforeEach(^{
-		repository = [self bareFixtureRepository];
+		repository = [QuickSpec.current bareFixtureRepository];
 	});
 
 	it(@"should move HEAD when used", ^{
@@ -89,7 +89,7 @@ describe(@"-resetToCommit:resetType:error:", ^{
 });
 
 afterEach(^{
-	[self tearDown];
+	[QuickSpec.current tearDown];
 });
 
 QuickSpecEnd

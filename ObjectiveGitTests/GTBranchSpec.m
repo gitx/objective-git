@@ -19,7 +19,7 @@ __block GTBranch *masterBranch;
 __block GTBranch *trackingBranch;
 
 beforeEach(^{
-	repository = self.testAppFixtureRepository;
+	repository = QuickSpec.current.testAppFixtureRepository;
 	expect(repository).notTo(beNil());
 
 	NSError *error = nil;
@@ -240,7 +240,7 @@ describe(@"-updateTrackingBranch:error:", ^{
 	});
 		
 	it(@"should set a remote tracking branch without branches amount change", ^{
-		GTRepository *repository = self.testAppForkFixtureRepository;
+		GTRepository *repository = QuickSpec.current.testAppForkFixtureRepository;
 		expect(repository).notTo(beNil());
 			
 		NSError *error = nil;
@@ -307,7 +307,7 @@ describe(@"-rename:force:error", ^{
 });
 
 afterEach(^{
-	[self tearDown];
+	[QuickSpec.current tearDown];
 });
 
 QuickSpecEnd

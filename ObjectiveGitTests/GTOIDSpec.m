@@ -81,7 +81,7 @@ it(@"should return an error when initialized with a string shorter than 40 chara
 });
 
 afterEach(^{
-	[self tearDown];
+	[QuickSpec.current tearDown];
 });
 
 QuickSpecEnd
