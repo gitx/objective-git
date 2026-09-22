@@ -1386,6 +1386,7 @@
 		};
 		D0A330F116027F2300A616FA /* libgit2 */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -1393,6 +1394,7 @@
 			);
 			name = libgit2;
 			outputPaths = (
+				"$(SRCROOT)/External/libgit2.a",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
