@@ -13,7 +13,6 @@
 
 #import "git2/errors.h"
 #import "git2/sys/filter.h"
-#import "git2/deprecated.h"
 
 NSString * const GTFilterErrorDomain = @"GTFilterErrorDomain";
 
@@ -57,7 +56,7 @@ static NSMutableDictionary *GTFiltersGitFilterToRegisteredFilters = nil;
 
 	_filter.version = GIT_FILTER_VERSION;
 	_filter.attributes = attributes.UTF8String;
-	_filter.apply = &GTFilterApply;
+	_filter.stream = &GTFilterStreamNew;
 
 	_name = [name copy];
 	_applyBlock = [applyBlock copy];
@@ -103,14 +102,73 @@ static int GTFilterCheck(git_filter *filter, void **payload, const git_filter_so
 	return accept ? 0 : GIT_PASSTHROUGH;
 }
 
-static int GTFilterApply(git_filter *filter, void **payload, git_buf *to, const git_buf *from, const git_filter_source *src) {
-	GTFilter *self = GTFiltersGitFilterToRegisteredFilters[[NSValue valueWithPointer:filter]];
-	NSData *fromData = [NSData dataWithBytesNoCopy:from->ptr length:from->size freeWhenDone:NO];
-	BOOL applied = YES;
-	NSData *toData = self.applyBlock(payload, fromData, [[GTFilterSource alloc] initWithGitFilterSource:src], &applied);
-	if (!applied) return GIT_PASSTHROUGH;
+// Backing storage for the `git_writestream` handed to libgit2 by
+// `GTFilterStreamNew`. `git_writestream` structs are used with C-style
+// "inheritance": `parent` must be the first field so a `GTFilterWriteStream *`
+// can be reinterpreted as a `git_writestream *`.
+//
+// The apply block operates on a complete buffer (an `NSData`), not a stream,
+// so incoming chunks are accumulated in `bufferRef` and only handed to the
+// block once `close` is called (i.e. once all data has been written).
+typedef struct {
+	git_writestream parent;
+	void *filterRef;    // (GTFilter *), retained via CFBridgingRetain
+	void *sourceRef;    // (GTFilterSource *), retained via CFBridgingRetain
+	void *bufferRef;    // (NSMutableData *), retained via CFBridgingRetain
+	void **payload;
+	git_writestream *next;
+} GTFilterWriteStream;
 
-	git_buf_set(to, toData.bytes, toData.length);
+static int GTFilterStreamWrite(git_writestream *s, const char *buffer, size_t len) {
+	GTFilterWriteStream *stream = (GTFilterWriteStream *)s;
+	NSMutableData *data = (__bridge NSMutableData *)stream->bufferRef;
+	[data appendBytes:buffer length:len];
+	return 0;
+}
+
+static int GTFilterStreamClose(git_writestream *s) {
+	GTFilterWriteStream *stream = (GTFilterWriteStream *)s;
+	GTFilter *filter = (__bridge GTFilter *)stream->filterRef;
+	GTFilterSource *source = (__bridge GTFilterSource *)stream->sourceRef;
+	NSData *fromData = (__bridge NSData *)stream->bufferRef;
+
+	BOOL applied = YES;
+	NSData *toData = filter.applyBlock(stream->payload, fromData, source, &applied);
+	NSData *outputData = applied ? toData : fromData;
+
+	git_writestream *next = stream->next;
+	int result = next->write(next, outputData.bytes, outputData.length);
+	if (result < 0) return result;
+
+	return next->close(next);
+}
+
+static void GTFilterStreamFree(git_writestream *s) {
+	GTFilterWriteStream *stream = (GTFilterWriteStream *)s;
+	CFBridgingRelease(stream->filterRef);
+	CFBridgingRelease(stream->sourceRef);
+	CFBridgingRelease(stream->bufferRef);
+	free(stream);
+}
+
+static int GTFilterStreamNew(git_writestream **out, git_filter *filter, void **payload, const git_filter_source *src, git_writestream *next) {
+	GTFilter *self = GTFiltersGitFilterToRegisteredFilters[[NSValue valueWithPointer:filter]];
+	GTFilterSource *source = [[GTFilterSource alloc] initWithGitFilterSource:src];
+	NSCAssert(source != nil, @"Unexpected nil filter source");
+
+	GTFilterWriteStream *stream = calloc(1, sizeof(GTFilterWriteStream));
+	if (stream == NULL) return GIT_ERROR;
+
+	stream->parent.write = GTFilterStreamWrite;
+	stream->parent.close = GTFilterStreamClose;
+	stream->parent.free = GTFilterStreamFree;
+	stream->filterRef = (void *)CFBridgingRetain(self);
+	stream->sourceRef = (void *)CFBridgingRetain(source);
+	stream->bufferRef = (void *)CFBridgingRetain([NSMutableData data]);
+	stream->payload = payload;
+	stream->next = next;
+
+	*out = (git_writestream *)stream;
 	return 0;
 }
 
