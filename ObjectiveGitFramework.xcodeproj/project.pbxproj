@@ -1763,6 +1763,12 @@
 					"$(inherited)",
 					"-DGIT_SSH",
 				);
+				// Override the vendored Carthage/Checkouts/xcconfigs Debug.xcconfig,
+				// which hardcodes "--digest-algorithm=sha1". Current codesign
+				// rejects SHA-1 outright ("signing with only SHA1 not allowed"),
+				// so drop it here and keep only the network-independent timestamp
+				// opt-out.
+				OTHER_CODE_SIGN_FLAGS = "--timestamp=none";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WARNING_CFLAGS = (
