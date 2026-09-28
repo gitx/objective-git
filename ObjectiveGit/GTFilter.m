@@ -21,6 +21,8 @@ const NSInteger GTFilterErrorNameAlreadyRegistered = -1;
 static NSMutableDictionary *GTFiltersNameToRegisteredFilters = nil;
 static NSMutableDictionary *GTFiltersGitFilterToRegisteredFilters = nil;
 
+static int GTFilterStreamNew(git_writestream **out, git_filter *filter, void **payload, const git_filter_source *src, git_writestream *next);
+
 @interface GTFilter () {
 	git_filter _filter;
 }
