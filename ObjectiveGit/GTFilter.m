@@ -148,6 +148,7 @@ static void GTFilterStreamFree(git_writestream *s) {
 	CFBridgingRelease(stream->filterRef);
 	CFBridgingRelease(stream->sourceRef);
 	CFBridgingRelease(stream->bufferRef);
+	stream->next->free(stream->next);
 	free(stream);
 }
 
