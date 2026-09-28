@@ -106,12 +106,31 @@ static void removeCleanRepository(void) {
 
 	NSString *cleanRepositoryPath = self.cleanRepositoryPath;
 	if (![NSFileManager.defaultManager fileExistsAtPath:cleanRepositoryPath isDirectory:nil]) {
+		// Parallel test execution runs each Spec class in its own process, but
+		// they all share the same rootTempDirectory (NSTemporaryDirectory() is
+		// per-user, not per-process). If two processes both see
+		// cleanRepositoryPath missing and unzip straight into it, one process
+		// can observe the directory as soon as it's created (e.g. via mkdir)
+		// and start copying out of it before the other process has finished
+		// extracting every entry, hitting "no such file" for whichever
+		// fixture hadn't been written yet.
+		//
+		// Avoid that by unzipping into a private, uniquely named staging
+		// directory first, then publishing it under cleanRepositoryPath with
+		// a single atomic rename. That way the shared name only ever refers
+		// to a fully extracted directory, never a partial one.
+		NSString *stagingPath = [self.rootTempDirectory stringByAppendingPathComponent:[@"clean_repository-" stringByAppendingString:NSProcessInfo.processInfo.globallyUniqueString]];
+
 		error = nil;
-		success = [self unzipFromArchiveAtPath:zippedRepositoriesPath intoDirectory:cleanRepositoryPath error:&error];
-		XCTAssertTrue(success, @"Couldn't unzip fixture \"%@\" from %@ to %@: %@", repositoryName, zippedRepositoriesPath, cleanRepositoryPath, error);
-		if (!success) {
-			[NSFileManager.defaultManager removeItemAtPath:cleanRepositoryPath error:NULL];
-			return;
+		success = [self unzipFromArchiveAtPath:zippedRepositoriesPath intoDirectory:stagingPath error:&error];
+		XCTAssertTrue(success, @"Couldn't unzip fixture \"%@\" from %@ to %@: %@", repositoryName, zippedRepositoriesPath, stagingPath, error);
+
+		error = nil;
+		if (![NSFileManager.defaultManager moveItemAtPath:stagingPath toPath:cleanRepositoryPath error:&error]) {
+			// Another process already published cleanRepositoryPath first;
+			// that's fine, just discard our redundant staging copy.
+			[NSFileManager.defaultManager removeItemAtPath:stagingPath error:NULL];
+			XCTAssertTrue([NSFileManager.defaultManager fileExistsAtPath:cleanRepositoryPath isDirectory:nil], @"Couldn't publish unzipped fixtures at %@: %@", cleanRepositoryPath, error);
 		}
 	}
 
