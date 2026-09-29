@@ -16,6 +16,12 @@ static const NSInteger FixturesErrorUnzipFailed = 666;
 
 static NSString * const FixturesErrorDomain = @"com.objectivegit.Fixtures";
 
+static NSString *processCleanRepositoryPath;
+
+static void removeCleanRepository(void) {
+	[NSFileManager.defaultManager removeItemAtPath:processCleanRepositoryPath error:NULL];
+}
+
 @interface QuickSpec (Fixtures)
 
 @property (nonatomic, readonly, copy) NSString *repositoryFixturesPath;
@@ -69,6 +75,15 @@ static NSString * const FixturesErrorDomain = @"com.objectivegit.Fixtures";
 	return [NSTemporaryDirectory() stringByAppendingPathComponent:@"com.libgit2.objectivegit"];
 }
 
+- (NSString *)cleanRepositoryPath {
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		processCleanRepositoryPath = [self.rootTempDirectory stringByAppendingPathComponent:[@"clean_repository-" stringByAppendingString:NSProcessInfo.processInfo.globallyUniqueString]];
+		atexit(removeCleanRepository);
+	});
+	return processCleanRepositoryPath;
+}
+
 - (void)setUpTempDirectoryPath {
 	self.tempDirectoryPath = [self.rootTempDirectory stringByAppendingPathComponent:NSProcessInfo.processInfo.globallyUniqueString];
 
@@ -89,7 +104,7 @@ static NSString * const FixturesErrorDomain = @"com.objectivegit.Fixtures";
 
 	NSString *zippedRepositoriesPath = [[NSBundle bundleForClass:self.class] pathForResource:@"fixtures" ofType:@"zip"];
 
-	NSString *cleanRepositoryPath = [self.rootTempDirectory stringByAppendingPathComponent:@"clean_repository"];
+	NSString *cleanRepositoryPath = self.cleanRepositoryPath;
 	if (![NSFileManager.defaultManager fileExistsAtPath:cleanRepositoryPath isDirectory:nil]) {
 		error = nil;
 		success = [self unzipFromArchiveAtPath:zippedRepositoriesPath intoDirectory:cleanRepositoryPath error:&error];
