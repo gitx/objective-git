@@ -17,7 +17,7 @@ QuickSpecBegin(GTRepositoryStashing)
 __block GTRepository *repository;
 
 beforeEach(^{
-	repository = self.testAppFixtureRepository;
+	repository = QuickSpec.current.testAppFixtureRepository;
 	expect(repository).notTo(beNil());
 });
 
@@ -195,7 +195,7 @@ it(@"should fail to apply conflicting stashes", ^{
 });
 
 afterEach(^{
-	[self tearDown];
+	[QuickSpec.current tearDown];
 });
 
 QuickSpecEnd

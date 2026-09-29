@@ -17,7 +17,7 @@ QuickSpecBegin(GTBlameSpec)
 __block GTBlame *blame = nil;
 
 beforeEach(^{
-	blame = [self.testAppFixtureRepository blameWithFile:@"README1.txt" options:nil error:nil];
+	blame = [QuickSpec.current.testAppFixtureRepository blameWithFile:@"README1.txt" options:nil error:nil];
 	expect(blame).notTo(beNil());
 });
 
@@ -59,7 +59,7 @@ it(@"should be able to get the same hunk from an index or a line", ^{
 
 describe(@"Creating a blame with options", ^{
 	it(@"should follow the instructions provided by the GTBlameOptionsOldestCommitOID key", ^{
-		GTBlame *optionsBlame = [self.testAppFixtureRepository blameWithFile:@"README1.txt" options:@{ GTBlameOptionsOldestCommitOID: [GTOID oidWithSHA:@"1d69f3c0aeaf0d62e25591987b93b8ffc53abd77"] } error:nil];
+		GTBlame *optionsBlame = [QuickSpec.current.testAppFixtureRepository blameWithFile:@"README1.txt" options:@{ GTBlameOptionsOldestCommitOID: [GTOID oidWithSHA:@"1d69f3c0aeaf0d62e25591987b93b8ffc53abd77"] } error:nil];
 
 		expect(optionsBlame).notTo(beNil());
 		expect(optionsBlame).notTo(equal(blame));
@@ -67,7 +67,7 @@ describe(@"Creating a blame with options", ^{
 
 	it(@"should follow the instructions provided by the GTBlameOptionsNewestCommitOID key", ^{
 		GTOID *newOID = [GTOID oidWithSHA:@"6317779b4731d9c837dcc6972b964bdf4211eeef"];
-		GTBlame *optionsBlame = [self.testAppFixtureRepository blameWithFile:@"README1.txt" options:@{ GTBlameOptionsNewestCommitOID: newOID } error:nil];
+		GTBlame *optionsBlame = [QuickSpec.current.testAppFixtureRepository blameWithFile:@"README1.txt" options:@{ GTBlameOptionsNewestCommitOID: newOID } error:nil];
 
 		GTBlameHunk *hunk = [optionsBlame hunkAtIndex:0];
 		expect(@(hunk.lines.location)).to(equal(@1));
@@ -75,7 +75,7 @@ describe(@"Creating a blame with options", ^{
 	});
 
 	it(@"should follow the instructions provided by GTBlameOptionsFirstLine and GTBlameOptionsLastLine keys", ^{
-		GTBlame *optionsBlame = [self.testAppFixtureRepository blameWithFile:@"README1.txt" options:@{ GTBlameOptionsFirstLine: @22, GTBlameOptionsLastLine: @24 } error:nil];
+		GTBlame *optionsBlame = [QuickSpec.current.testAppFixtureRepository blameWithFile:@"README1.txt" options:@{ GTBlameOptionsFirstLine: @22, GTBlameOptionsLastLine: @24 } error:nil];
 		GTBlameHunk *hunk = [optionsBlame hunkAtIndex:0];
 
 		expect(optionsBlame).notTo(beNil());
@@ -85,7 +85,7 @@ describe(@"Creating a blame with options", ^{
 });
 
 afterEach(^{
-	[self tearDown];
+	[QuickSpec.current tearDown];
 });
 
 QuickSpecEnd

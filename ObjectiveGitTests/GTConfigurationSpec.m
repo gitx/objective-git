@@ -52,7 +52,7 @@ describe(@"+defaultConfiguration", ^{
 });
 
 afterEach(^{
-	[self tearDown];
+	[QuickSpec.current tearDown];
 });
 
 QuickSpecEnd

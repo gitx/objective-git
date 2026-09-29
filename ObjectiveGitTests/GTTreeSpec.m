@@ -19,7 +19,7 @@ QuickSpecBegin(GTTreeSpec)
 __block GTTree *tree;
 
 beforeEach(^{
-	GTRepository *repo = self.bareFixtureRepository;
+	GTRepository *repo = QuickSpec.current.bareFixtureRepository;
 	expect(repo).notTo(beNil());
 
 	tree = (GTTree *)[repo lookUpObjectBySHA:testTreeSHA error:NULL];
@@ -124,7 +124,7 @@ describe(@"fetching entries from paths", ^{
 });
 
 afterEach(^{
-	[self tearDown];
+	[QuickSpec.current tearDown];
 });
 
 QuickSpecEnd

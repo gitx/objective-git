@@ -17,7 +17,7 @@ QuickSpecBegin(GTSubmoduleSpec)
 __block GTRepository *repo;
 
 beforeEach(^{
-	repo = self.submoduleFixtureRepository;
+	repo = QuickSpec.current.submoduleFixtureRepository;
 	expect(repo).notTo(beNil());
 });
 
@@ -251,7 +251,7 @@ describe(@"dirty, checked out submodule", ^{
 });
 
 afterEach(^{
-	[self tearDown];
+	[QuickSpec.current tearDown];
 });
 
 QuickSpecEnd

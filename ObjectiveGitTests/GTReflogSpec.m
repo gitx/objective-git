@@ -17,7 +17,7 @@ QuickSpecBegin(GTReflogSpec)
 __block GTReflog *reflog;
 __block GTRepository *repository;
 beforeEach(^{
-	repository = self.testAppFixtureRepository;
+	repository = QuickSpec.current.testAppFixtureRepository;
 	expect(repository).notTo(beNil());
 
 	GTBranch *branch = [repository currentBranchWithError:NULL];
@@ -57,7 +57,7 @@ describe(@"writing", ^{
 });
 
 afterEach(^{
-	[self tearDown];
+	[QuickSpec.current tearDown];
 });
 
 QuickSpecEnd
