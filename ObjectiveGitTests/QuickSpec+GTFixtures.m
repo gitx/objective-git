@@ -94,6 +94,10 @@ static NSString * const FixturesErrorDomain = @"com.objectivegit.Fixtures";
 		error = nil;
 		success = [self unzipFromArchiveAtPath:zippedRepositoriesPath intoDirectory:cleanRepositoryPath error:&error];
 		XCTAssertTrue(success, @"Couldn't unzip fixture \"%@\" from %@ to %@: %@", repositoryName, zippedRepositoriesPath, cleanRepositoryPath, error);
+		if (!success) {
+			[NSFileManager.defaultManager removeItemAtPath:cleanRepositoryPath error:NULL];
+			return;
+		}
 	}
 
 	success = [[NSFileManager defaultManager] copyItemAtPath:[cleanRepositoryPath stringByAppendingPathComponent:repositoryName] toPath:path error:&error];
