@@ -46,6 +46,7 @@ Homebrew, you will need to install the following manually:
   - symlinks:  lib/libssh2.a include/libssh2.h include/libssh2_sftp.h include/libssh2_publickey.h
 
 To develop ObjectiveGit on its own, open the `ObjectiveGitFramework.xcworkspace` file.
+From the command line, run `make help` to list the targets that bootstrap, build, test and archive the framework.
 
 # Installation
 
