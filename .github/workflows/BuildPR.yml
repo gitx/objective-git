@@ -57,7 +57,7 @@ jobs:
       - name: Unlink openssl 3
         run: |
           brew unlink openssl@3
-#      - name: Test project
-#        run: make test ARCH=${{ matrix.abi }}
+      - name: Test project
+        run: make test ARCH=${{ matrix.abi }}
       - name: Archive project
         run: make archive ARCH=${{ matrix.abi }}
