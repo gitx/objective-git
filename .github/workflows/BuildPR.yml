@@ -57,7 +57,18 @@ jobs:
       - name: Unlink openssl 3
         run: |
           brew unlink openssl@3
-#      - name: Test project
-#        run: make test ARCH=${{ matrix.abi }}
+      - name: Test project
+        id: run-unit-tests
+        run: |
+          make test \
+            ARCH=${{ matrix.abi }} \
+            RESULT_BUNDLE=UnitTestResults-${{ matrix.abi }}.xcresult
+      - name: Upload unit test results
+        if: ${{ failure() && steps.run-unit-tests.outcome == 'failure' }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: UnitTestResults-${{ matrix.abi }}.xcresult
+          path: UnitTestResults-${{ matrix.abi }}.xcresult
+          retention-days: ${{ github.event_name == 'pull_request' && 7 || 90 }}
       - name: Archive project
         run: make archive ARCH=${{ matrix.abi }}

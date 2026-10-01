@@ -246,7 +246,15 @@ describe(@"dirty, checked out submodule", ^{
 
 		__block NSError *error = nil;
 		expect(@([submodule sync:&error])).to(beTruthy());
-		expect([config stringForKey:configKey]).to(equal(@"../Test_App"));
+
+		// The fixture repository has no "origin" remote configured, so
+		// libgit2 resolves the submodule's relative URL ("../Test_App")
+		// against the parent repository's working directory instead of a
+		// remote URL, producing an absolute path to the sibling Test_App
+		// fixture rather than leaving the URL as the relative string.
+		NSString *expectedURL = [repo.fileURL URLByDeletingLastPathComponent].path;
+		expectedURL = [expectedURL stringByAppendingPathComponent:@"Test_App"];
+		expect([config stringForKey:configKey]).to(equal(expectedURL));
 	});
 });
 

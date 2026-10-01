@@ -20,6 +20,11 @@ DESTINATION := platform=macOS,arch=$(ARCH)
 LIBGIT2_ARCHIVE := External/libgit2.a
 LIBGIT2_BUILD_DIR := External/libgit2/build
 
+# Set to a path to have xcodebuild write an .xcresult bundle, which is where CI
+# reads failed unit test results back out of a test run.
+RESULT_BUNDLE ?=
+RESULT_BUNDLE_ARG := $(if $(RESULT_BUNDLE),-resultBundlePath $(RESULT_BUNDLE))
+
 XCODEBUILD := xcodebuild -workspace $(WORKSPACE) -scheme "$(SCHEME)" ARCHS="$(ARCH)"
 
 MAKEFILE := $(firstword $(MAKEFILE_LIST))
@@ -101,7 +106,7 @@ build: git-submodule-check ## Build the macOS framework
 	$(XCODEBUILD) -destination "$(DESTINATION)" build
 
 test: git-submodule-check ## Run the macOS framework specs
-	$(XCODEBUILD) -destination "$(DESTINATION)" test
+	$(XCODEBUILD) -destination "$(DESTINATION)" $(RESULT_BUNDLE_ARG) test
 
 archive: git-submodule-check ## Build a release archive of the macOS framework
 	$(XCODEBUILD) archive
