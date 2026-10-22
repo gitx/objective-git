@@ -10,7 +10,7 @@
 #import "NSError+Git.h"
 
 #import "git2/errors.h"
-#import "git2/odb.h"
+#import "git2/object.h"
 
 @interface GTOID () {
 	git_oid _git_oid;
@@ -133,7 +133,9 @@
 	NSParameterAssert(data != nil);
 
 	git_oid oid;
-	int gitError = git_odb_hash(&oid, data.bytes, data.length, (git_object_t)type);
+	git_object_id_options options = GIT_OBJECT_ID_OPTIONS_INIT;
+	options.object_type = (git_object_t)type;
+	int gitError = git_object_id_from_buffer(&oid, data.bytes, data.length, &options);
 	if (gitError != GIT_OK) {
 		if (error != NULL) *error = [NSError git_errorFor:gitError description:@"Failed to hash"];
 		return nil;

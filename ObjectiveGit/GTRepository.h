@@ -94,7 +94,13 @@ typedef NS_OPTIONS(NSInteger, GTRepositoryOpenFlags) {
 typedef NS_OPTIONS(NSInteger, GTRepositoryInitFlags) {
 	GTRepositoryInitBare = GIT_REPOSITORY_INIT_BARE,
 	GTRepositoryInitWithoutReinitializing = GIT_REPOSITORY_INIT_NO_REINIT,
-	GTRepositoryInitWithoutDotGit = GIT_REPOSITORY_INIT_NO_DOTGIT_DIR,
+	// In libgit2 1.9.7 this was a real bit (GIT_REPOSITORY_INIT_NO_DOTGIT_DIR,
+	// (1u << 2)) that stopped ".git" being appended to the given path.
+	// libgit2 2.0 dropped the flag entirely (`#define ... 0` in
+	// deprecated.h); the same effect is now implied whenever `workdir_path`
+	// is set on the init options. Nothing in GitX or this repo uses this
+	// flag, so it's kept only for source compatibility.
+	GTRepositoryInitWithoutDotGit __attribute__((deprecated("No longer has any effect since libgit2 2.0; set workdir_path on the init options instead."))) = 0,
 	GTRepositoryInitCreatingRepositoryDirectory = GIT_REPOSITORY_INIT_MKDIR,
 	GTRepositoryInitCreatingIntermediateDirectories = GIT_REPOSITORY_INIT_MKPATH,
 	GTRepositoryInitWithExternalTemplate = GIT_REPOSITORY_INIT_EXTERNAL_TEMPLATE,
