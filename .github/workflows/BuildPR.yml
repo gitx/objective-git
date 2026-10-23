@@ -31,15 +31,23 @@ jobs:
           # finds leftover files at the link destination (etc config,
           # opt symlink, Cellar keg) and prints noisy
           # "have not been removed!" / "overwritten during the `brew link`
-          # step" warnings.
-          brew uninstall --ignore-dependencies --force openssl@1.1 openssl@3 openssl || true
-          rm -rf /usr/local/etc/openssl@1.1 /usr/local/etc/openssl@3
-          rm -rf /usr/local/opt/openssl@1.1 /usr/local/opt/openssl@3
-          rm -rf /usr/local/Cellar/openssl@1.1 /usr/local/Cellar/openssl@3
-          rm -rf /opt/homebrew/etc/openssl@1.1 /opt/homebrew/etc/openssl@3
-          rm -rf /opt/homebrew/opt/openssl@1.1 /opt/homebrew/opt/openssl@3
-          rm -rf /opt/homebrew/Cellar/openssl@1.1 /opt/homebrew/Cellar/openssl@3
+          # step" warnings. Newer runner images (e.g. macos-26) preinstall
+          # openssl@4 as the default "openssl" formula, so that must be
+          # cleaned up too or linking openssl@3 afterwards fails.
+          brew uninstall --ignore-dependencies --force openssl@1.1 openssl@3 openssl@4 openssl || true
+          rm -rf /usr/local/etc/openssl@1.1 /usr/local/etc/openssl@3 /usr/local/etc/openssl@4 /usr/local/etc/openssl
+          rm -rf /usr/local/opt/openssl@1.1 /usr/local/opt/openssl@3 /usr/local/opt/openssl@4 /usr/local/opt/openssl
+          rm -rf /usr/local/Cellar/openssl@1.1 /usr/local/Cellar/openssl@3 /usr/local/Cellar/openssl@4 /usr/local/Cellar/openssl
+          rm -rf /opt/homebrew/etc/openssl@1.1 /opt/homebrew/etc/openssl@3 /opt/homebrew/etc/openssl@4 /opt/homebrew/etc/openssl
+          rm -rf /opt/homebrew/opt/openssl@1.1 /opt/homebrew/opt/openssl@3 /opt/homebrew/opt/openssl@4 /opt/homebrew/opt/openssl
+          rm -rf /opt/homebrew/Cellar/openssl@1.1 /opt/homebrew/Cellar/openssl@3 /opt/homebrew/Cellar/openssl@4 /opt/homebrew/Cellar/openssl
+          # The uninstalls/removes above don't always clear out the actual
+          # bin/ symlinks left behind by a previously linked keg, which then
+          # blocks `brew link` below with "already exists" conflicts.
+          rm -f /usr/local/bin/openssl /usr/local/bin/c_rehash
+          rm -f /opt/homebrew/bin/openssl /opt/homebrew/bin/c_rehash
           brew install openssl@3
+          brew link --overwrite openssl@3
           openssl version
       - name: Checkout
         uses: actions/checkout@v7
