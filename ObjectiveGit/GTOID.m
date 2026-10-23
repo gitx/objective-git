@@ -10,6 +10,7 @@
 #import "NSError+Git.h"
 
 #import "git2/errors.h"
+#import "git2/deprecated.h"
 #import "git2/odb.h"
 
 @interface GTOID () {

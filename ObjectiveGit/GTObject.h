@@ -37,8 +37,9 @@ typedef NS_ENUM(int, GTObjectType) {
 	GTObjectTypeTree = GIT_OBJECT_TREE,			/**< A tree (directory listing) object. */
 	GTObjectTypeBlob = GIT_OBJECT_BLOB,			/**< A file revision object. */
 	GTObjectTypeTag = GIT_OBJECT_TAG,				/**< An annotated tag object. */
-	GTObjectTypeOffsetDelta = GIT_OBJECT_OFS_DELTA,/**< A delta, base is given by an offset. */
-	GTObjectTypeRefDelta = GIT_OBJECT_REF_DELTA,	/**< A delta, base is given by object id. */
+	// Pack-only types are no longer part of libgit2's public object enum.
+	GTObjectTypeOffsetDelta = 6,					/**< A delta, base is given by an offset. */
+	GTObjectTypeRefDelta = 7,						/**< A delta, base is given by object id. */
 };
 
 @class GTRepository;
