@@ -36,6 +36,7 @@
 #import <ObjectiveGit/GTFilterList.h>
 #import <ObjectiveGit/GTCheckoutOptions.h>
 #import <git2/checkout.h>
+#import <git2/deprecated.h>
 #import <git2/repository.h>
 #import <git2/transport.h>
 #import <git2/sys/transport.h>
